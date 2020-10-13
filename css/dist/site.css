@@ -1,0 +1,16 @@
+.jumbotron {
+  border-radius: 0px;
+  background-color: #4568dc;
+  background-image: linear-gradient(to right, #4568dc, #3497c5);
+  color: white;
+}
+.jumbotron a {
+  color: #dcd445;
+}
+.jumbotron a :hover {
+  color: #f5f118;
+}
+
+#footer-section {
+  margin-top: 100px;
+}
