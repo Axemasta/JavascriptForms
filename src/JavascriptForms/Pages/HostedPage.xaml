@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fa="clr-namespace:FontAwesome"
+             x:Class="JavascriptForms.Pages.HostedPage"
+             Title="{Binding Title}"
+             IconImageSource="globe_europe">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="TODO: Example of event interception in hosted version of local page" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+            <Label Text="{x:Static fa:FontAwesomeIcons.Comments}" FontFamily="{StaticResource FontAwesomeSolid}" HorizontalOptions="Center"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

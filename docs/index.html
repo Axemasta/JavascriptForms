@@ -71,22 +71,22 @@
             
                                 <p>In this example we will enter some text into the textbox and display an alert in our xamarin app with the data. In this case the app is hardcoded to expect a name, so enter your name! 😄</p>
                             
-                                <form id="invoke-name-form">
+                                <div id="invoke-name-form">
                                     <div class="form-row align-items-center">
                                         <div class="col-auto">
-                                            <label class="sr-only" for="inlineFormInputGroup">Your Name</label>
+                                            <label class="sr-only" for="invoke-name-entry">Your Name</label>
                                             <div class="input-group mb-2">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">🙋‍♂️</div>
                                                 </div>
-                                                <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Your Name">
+                                                <input type="text" class="form-control" id="invoke-name-entry" placeholder="Your Name">
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                                            <button type="submit" id="invoke-name-btn" class="btn btn-primary mb-2">Submit</button>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>   
                         </div>
                     </section>

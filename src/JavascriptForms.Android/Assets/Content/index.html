@@ -1,0 +1,49 @@
+﻿<html>
+<body>
+
+    <div id="invoke-name-example" class="row">
+        <h1>Invoke Name Alert</h1>
+
+        <p>In this example we will enter some text into the textbox and display an alert in our xamarin app with the data. In this case the app is hardcoded to expect a name, so enter your name! 😄</p>
+
+        <div id="invoke-name-form">
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <label class="sr-only" for="invoke-name-entry">Your Name</label>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">🙋‍♂️</div>
+                        </div>
+                        <input type="text" class="form-control" id="invoke-name-entry" placeholder="Your Name">
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" id="invoke-name-btn" class="btn btn-primary mb-2">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script type="text/javascript">$(document).ready(function () {
+
+            $('#invoke-name-btn').on('click', function () {
+
+                console.log('submitting');
+
+                invokeCSCode($('#invoke-name-entry').val());
+            });
+
+        });
+
+        function invokeCSCode(data) {
+            try {
+                console.log("Sending Data:" + data);
+                invokeCSharpAction(data);
+            }
+            catch (err) {
+                log(err);
+            }
+        }</script>
+</body>
+</html>
