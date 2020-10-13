@@ -15,6 +15,8 @@ function invokeCSCode(data) {
         invokeCSharpAction(data);
     }
     catch (err) {
-        log(err);
+        console.log(err);
+
+        alert('Looks like the invokeCSharpAction method was not injected into the DOM. Not to worry, I guess I\'ll let you off for viewing in a non mobile browser 😉');
     }
 }

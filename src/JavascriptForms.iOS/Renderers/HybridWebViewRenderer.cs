@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using JavascriptForms;
 using JavascriptForms.iOS.Renderers;
 using Foundation;
@@ -41,8 +42,31 @@ namespace JavascriptForms.iOS.Renderers
 
             if (e.NewElement != null)
             {
-                string filename = Path.Combine(NSBundle.MainBundle.BundlePath, $"Content/{((HybridWebView)Element).Uri}");
-                LoadRequest(new NSUrlRequest(new NSUrl(filename, false)));
+                HybridWebView hybridWebView = Element as HybridWebView;
+
+                if (hybridWebView == null)
+                    throw new NullReferenceException();
+
+                switch (hybridWebView.SiteSource)
+                {
+                    case Enums.SiteSource.Local:
+                        {
+                            string filename = Path.Combine(NSBundle.MainBundle.BundlePath, $"Content/{hybridWebView.Uri}");
+                            LoadRequest(new NSUrlRequest(new NSUrl(filename, false)));
+                            break;
+                        }
+
+                    case Enums.SiteSource.Browser:
+                        {
+                            LoadRequest(new NSUrlRequest(new NSUrl(hybridWebView.Uri)));
+                            break;
+                        }
+
+                    default:
+                        throw new NotImplementedException($"SiteSource:{hybridWebView.SiteSource} has not been implemented");
+                }
+
+                
             }
         }
 

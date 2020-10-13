@@ -16,7 +16,7 @@ namespace JavascriptForms.Pages
 
         private void InvokeNamePage_BindingContextChanged(object sender, EventArgs e)
         {
-            var vm = ((ViewModels.LocalPageViewModel)this.BindingContext);
+            var vm = ((ViewModels.DisplayNameViewModel)this.BindingContext);
 
             if (vm == null)
                 return;
