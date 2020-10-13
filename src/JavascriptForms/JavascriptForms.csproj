@@ -20,5 +20,6 @@
     <Folder Include="ViewModels\" />
     <Folder Include="Pages\" />
     <Folder Include="Utils\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 </Project>

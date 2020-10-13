@@ -35,7 +35,7 @@ namespace JavascriptForms
 
         private string GetNavigationPath()
         {
-            string path = nameof(TabbedPage);
+            string path = nameof(Pages.TabbedPage);
 
             string[] tabs = new string[]
             {
@@ -53,10 +53,10 @@ namespace JavascriptForms
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
-            containerRegistry.RegisterForNavigation<TabbedPage>();
-            containerRegistry.RegisterForNavigation<LocalPage, LocalPageViewModel>();
-            containerRegistry.RegisterForNavigation<HostedPage, HostedPageViewModel>();
-            containerRegistry.RegisterForNavigation<ExternalPage, HostedPageViewModel>();
+            containerRegistry.RegisterForNavigation<Pages.TabbedPage>();
+            containerRegistry.RegisterForNavigation<LocalPage, DisplayNameViewModel>();
+            containerRegistry.RegisterForNavigation<HostedPage, DisplayNameViewModel>();
+            containerRegistry.RegisterForNavigation<ExternalPage, ExternalPageViewModel>();
         }
     }
 }

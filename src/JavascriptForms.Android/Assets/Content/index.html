@@ -1,47 +1,141 @@
 ﻿<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Javascript Forms Local</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        .jumbotron {
+            border-radius: 0px;
+            background-color: #FBD786;
+            background-image: linear-gradient(to right, #FBD786, #f7797d);
+            color: white;
+        }
+
+            .jumbotron a {
+                color: #dcd445;
+            }
+
+                .jumbotron a :hover {
+                    color: #f5f118;
+                }
+
+        #footer-section {
+            margin-top: 100px;
+        }
+    </style>
+</head>
 <body>
+    <section id="jumbo-section">
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="display-1">Javascript Forms</h1>
+                <small>Local</small>
+                <p>
+                    This Proof Of Concept (POC) provides an example implementation of javascript invokation in xamarin forms.
+                </p>
+                <p>
+                    Developed from the official Xamarin.Forms samples repository (<a href="https://github.com/xamarin/xamarin-forms-samples/tree/master/CustomRenderers/HybridWebView" target="_blank">HybridWebView</a>), I have built upon the example allowing more complex invokation of javascript.
+                </p>
 
-    <div id="invoke-name-example" class="row">
-        <h1>Invoke Name Alert</h1>
-
-        <p>In this example we will enter some text into the textbox and display an alert in our xamarin app with the data. In this case the app is hardcoded to expect a name, so enter your name! 😄</p>
-
-        <div id="invoke-name-form">
-            <div class="form-row align-items-center">
-                <div class="col-auto">
-                    <label class="sr-only" for="invoke-name-entry">Your Name</label>
-                    <div class="input-group mb-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">🙋‍♂️</div>
-                        </div>
-                        <input type="text" class="form-control" id="invoke-name-entry" placeholder="Your Name">
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <button type="submit" id="invoke-name-btn" class="btn btn-primary mb-2">Submit</button>
-                </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <section id="main-section" class="container">
+        <nav style="margin-bottom: 50px;;">
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-examples-tab" data-toggle="tab" href="#nav-examples" role="tab" aria-controls="nav-contact" aria-selected="false">Examples</a>
+                <a class="nav-item nav-link" id="nav-setup-tab" data-toggle="tab" href="#nav-setup" role="tab" aria-controls="nav-profile" aria-selected="false">Setup</a>
+                <a class="nav-item nav-link" id="nav-roadmap-tab" data-toggle="tab" href="#nav-roadmap" role="tab" aria-controls="nav-home" aria-selected="true">Roadmap</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-examples" role="tabpanel" aria-labelledby="nav-contact-tab">
+                <section id="examples-section">
+                    <div class="container">
+                        <div class="row">
+                            <h1>Examples</h1>
+                            <br /><br /><br /><br />
+                        </div>
+
+                        <div id="invoke-name-example" class="row">
+                            <h1>Invoke Name Alert</h1>
+
+                            <p>In this example we will enter some text into the textbox and display an alert in our xamarin app with the data. In this case the app is hardcoded to expect a name, so enter your name! 😄</p>
+
+                            <div id="invoke-name-form">
+                                <div class="form-row align-items-center">
+                                    <div class="col-auto">
+                                        <label class="sr-only" for="invoke-name-entry">Your Name</label>
+                                        <div class="input-group mb-2">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">🙋‍♂️</div>
+                                            </div>
+                                            <input type="text" class="form-control" id="invoke-name-entry" placeholder="Your Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" id="invoke-name-btn" class="btn btn-primary mb-2">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="tab-pane fade" id="nav-setup" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <section id="setup-section">
+                    <h1>Setup</h1>
+                    <p>This section explains how you can setup your Xamarin Forms application to be able to inject, intercept & invoke events within your app.</p>
+                </section>
+            </div>
+
+            <div class="tab-pane fade" id="nav-roadmap" role="tabpanel" aria-labelledby="nav-home-tab">
+                <section id="roadmap-section">
+                    <h1>Roadmap</h1>
+                    <p>I would like to get the following features working in this POC:</p>
+                    <ul>
+                        <li>Invoke Javascript In Xamarin Forms App <input type="checkbox" checked></li>
+                        <li>Pass Data From <strong>My</strong> Local Javascript To App <input type="checkbox"></li>
+                        <li>Pass Data From <strong>My</strong> Website Javascript To App <input type="checkbox"></li>
+                        <li>Invoke Data From <strong>External</strong> Website To My App <input type="checkbox"></li>
+                        <li>Create Generic Payload For Javascript So Only 1 Invokation Event Required<input type="checkbox"></li>
+                        <li>Typescript <input type="checkbox"></li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <section id="footer-section">
+        <footer class="text-muted">
+            <div class="container">
+                <hr />
+                <p>Javascript Forms Sample</p>
+            </div>
+        </footer>
+    </section>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script type="text/javascript">$(document).ready(function () {
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script>"use strict";
 
+        $(document).ready(function () {
             $('#invoke-name-btn').on('click', function () {
-
                 console.log('submitting');
-
                 invokeCSCode($('#invoke-name-entry').val());
             });
-
         });
 
         function invokeCSCode(data) {
             try {
                 console.log("Sending Data:" + data);
                 invokeCSharpAction(data);
-            }
-            catch (err) {
+            } catch (err) {
                 log(err);
             }
         }</script>

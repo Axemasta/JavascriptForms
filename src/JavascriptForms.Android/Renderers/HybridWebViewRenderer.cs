@@ -1,4 +1,5 @@
-﻿using Android.Content;
+﻿using System;
+using Android.Content;
 using JavascriptForms.Controls;
 using JavascriptForms.Droid.Renderers;
 using Xamarin.Forms;
@@ -26,11 +27,38 @@ namespace JavascriptForms.Droid.Renderers
                 Control.RemoveJavascriptInterface("jsBridge");
                 ((HybridWebView)Element).Cleanup();
             }
+
             if (e.NewElement != null)
             {
+                HybridWebView hybridWebView = Element as HybridWebView;
+
+                if (hybridWebView == null)
+                    throw new NullReferenceException();
+
                 Control.SetWebViewClient(new JavascriptWebViewClient(this, $"javascript: {JavascriptFunction}"));
                 Control.AddJavascriptInterface(new JSBridge(this), "jsBridge");
-                Control.LoadUrl($"file:///android_asset/Content/{((HybridWebView)Element).Uri}");
+
+                switch (hybridWebView.SiteSource)
+                {
+                    case Enums.SiteSource.Local:
+                        {
+                            Control.LoadUrl($"file:///android_asset/Content/{hybridWebView.Uri}");
+                            break;
+                        }
+
+                    case Enums.SiteSource.Browser:
+                        {
+                            Control.LoadUrl(hybridWebView.Uri);
+                            break;
+                        }
+
+                    default:
+                        throw new NotImplementedException($"SiteSource:{hybridWebView.SiteSource} has not been implemented");
+                }
+
+
+                
+                
             }
         }
 
