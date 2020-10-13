@@ -5,18 +5,18 @@ using Xamarin.Forms;
 
 namespace JavascriptForms.Pages
 {
-    public partial class InvokeNamePage : ContentPage
+    public partial class LocalPage : ContentPage
     {
-        public InvokeNamePage()
+        public LocalPage()
         {
             InitializeComponent();
 
-            this.BindingContextChanged += InvokeNamePage_BindingContextChanged;            
+            this.BindingContextChanged += InvokeNamePage_BindingContextChanged;
         }
 
         private void InvokeNamePage_BindingContextChanged(object sender, EventArgs e)
         {
-            var vm = ((ViewModels.InvokeNameViewModel)this.BindingContext);
+            var vm = ((ViewModels.LocalPageViewModel)this.BindingContext);
 
             if (vm == null)
                 return;

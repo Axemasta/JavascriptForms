@@ -1,27 +1,26 @@
-﻿using System;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Services;
 
 namespace JavascriptForms.ViewModels
 {
-    public class InvokeNameViewModel : ViewModelBase
+    public class LocalPageViewModel : ViewModelBase
     {
         private readonly IPageDialogService _dialogService;
 
         public DelegateCommand<string> InvokeNameCommand { get; private set; }
 
-        public InvokeNameViewModel(IPageDialogService dialogService)
+        public LocalPageViewModel(IPageDialogService dialogService)
         {
             _dialogService = dialogService;
 
-            Title = "Invoke Name";
+            Title = "Local Page";
 
             InvokeNameCommand = new DelegateCommand<string>(OnInvokeName);
         }
 
         public async void OnInvokeName(string name)
         {
-            await _dialogService.DisplayAlertAsync($"Hello {name}", "If you are reading your name, the javascript invokation was successful!", "OK");
+            await _dialogService.DisplayAlertAsync($"Hello {name}", $"If you are reading your name ({name}), the javascript invokation from local file was successful!", "OK");
         }
     }
 }

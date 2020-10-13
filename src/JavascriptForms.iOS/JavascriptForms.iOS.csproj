@@ -114,6 +114,24 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\external_link_square_alt.imageset\external_link_square_alt%403x.png" />
+    <ImageAsset Include="Assets.xcassets\external_link_square_alt.imageset\external_link_square_alt%402x.png" />
+    <ImageAsset Include="Assets.xcassets\external_link_square_alt.imageset\external_link_square_alt.png" />
+    <ImageAsset Include="Assets.xcassets\external_link_square_alt.imageset\Contents.json">
+      <Visible>False</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\globe_europe.imageset\globe_europe%403x.png" />
+    <ImageAsset Include="Assets.xcassets\globe_europe.imageset\globe_europe%402x.png" />
+    <ImageAsset Include="Assets.xcassets\globe_europe.imageset\globe_europe.png" />
+    <ImageAsset Include="Assets.xcassets\globe_europe.imageset\Contents.json">
+      <Visible>False</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\map_marked_alt.imageset\map_marked_alt%403x.png" />
+    <ImageAsset Include="Assets.xcassets\map_marked_alt.imageset\map_marked_alt%402x.png" />
+    <ImageAsset Include="Assets.xcassets\map_marked_alt.imageset\map_marked_alt.png" />
+    <ImageAsset Include="Assets.xcassets\map_marked_alt.imageset\Contents.json">
+      <Visible>False</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -124,7 +142,7 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.6.0.1141" />
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1534" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
     <PackageReference Include="Prism.DryIoc.Forms">
       <Version>7.2.0.1422</Version>
@@ -143,5 +161,8 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Content\index.html" />
+    <BundleResource Include="Resources\FontAwesome5Solid.otf" />
+    <BundleResource Include="Resources\FontAwesome5Regular.otf" />
+    <BundleResource Include="Resources\FontAwesome5Brands.otf" />
   </ItemGroup>
 </Project>
