@@ -12,6 +12,6 @@ function invokeCSCode(data) {
     console.log("Sending Data:" + data);
     invokeCSharpAction(data);
   } catch (err) {
-    log(err);
+    console.log(err);
   }
 }
