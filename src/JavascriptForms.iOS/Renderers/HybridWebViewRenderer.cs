@@ -7,6 +7,7 @@ using WebKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using JavascriptForms.Controls;
+using System.Reflection;
 
 [assembly: ExportRenderer(typeof(HybridWebView), typeof(HybridWebViewRenderer))]
 namespace JavascriptForms.iOS.Renderers
@@ -23,9 +24,50 @@ namespace JavascriptForms.iOS.Renderers
         public HybridWebViewRenderer(WKWebViewConfiguration config) : base(config)
         {
             userController = config.UserContentController;
-            var script = new WKUserScript(new NSString(JavaScriptFunction), WKUserScriptInjectionTime.AtDocumentEnd, false);
-            userController.AddUserScript(script);
+            var invokationScript = new WKUserScript(new NSString(JavaScriptFunction), WKUserScriptInjectionTime.AtDocumentEnd, false);
+            var jqueryScript = new WKUserScript(new NSString(LoadJquery()), WKUserScriptInjectionTime.AtDocumentEnd, false);
+            var inputSpyScript = new WKUserScript(new NSString(LoadAppJs()), WKUserScriptInjectionTime.AtDocumentEnd, false);
+
+            userController.AddUserScript(invokationScript);
+            userController.AddUserScript(jqueryScript);
+            userController.AddUserScript(inputSpyScript);
             userController.AddScriptMessageHandler(this, "invokeAction");
+            //userController.AddScriptMessageHandler(this, "logging");
+
+            //string js = @"var console = { log: function(msg){window.webkit.messageHandlers.logging.postMessage(msg) } };";
+            //this.EvaluateJavaScript(new NSString(js), (result, error) =>
+            //{
+            //    if (error != null)
+            //        Console.WriteLine($"installation of console.log() failed: {0}", error);
+            //});
+        }
+
+        private string LoadJquery()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "JavascriptForms.iOS.Scripts.jquery-3.5.1.min.js";
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                string result = reader.ReadToEnd();
+
+                return result;
+            }
+        }
+
+        private string LoadAppJs()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "JavascriptForms.iOS.Scripts.app.js";
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                string result = reader.ReadToEnd();
+
+                return result;
+            }
         }
 
         protected override void OnElementChanged(VisualElementChangedEventArgs e)
@@ -72,6 +114,8 @@ namespace JavascriptForms.iOS.Renderers
 
         public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
         {
+            //Console.WriteLine(message.Body);
+
             ((HybridWebView)Element).InvokeAction(message.Body.ToString());
         }
 

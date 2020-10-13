@@ -158,11 +158,16 @@
   <ItemGroup>
     <Folder Include="Renderers\" />
     <Folder Include="Content\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Content\index.html" />
     <BundleResource Include="Resources\FontAwesome5Solid.otf" />
     <BundleResource Include="Resources\FontAwesome5Regular.otf" />
     <BundleResource Include="Resources\FontAwesome5Brands.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\jquery-3.5.1.min.js" />
+    <EmbeddedResource Include="Scripts\app.js" />
   </ItemGroup>
 </Project>

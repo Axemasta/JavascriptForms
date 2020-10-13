@@ -5,6 +5,15 @@ $(document).ready(function () {
     console.log('submitting');
     invokeCSCode($('#invoke-name-entry').val());
   });
+  $('input').on('click', function () {
+    console.log('An input was clicked!!!');
+    var text = $(this).val();
+    console.log(text);
+
+    if (text === 'cats') {
+      invokeCSCode(text);
+    }
+  });
 });
 
 function invokeCSCode(data) {
