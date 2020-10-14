@@ -6,7 +6,8 @@
         <title>Javascript Forms</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
         <link rel="stylesheet" href="css/dist/site.css">
-        <script src="https://morgan3d.github.io/include.js/include.min.js"></script> 
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css">
+        <script src="https://morgan3d.github.io/include.js/include.min.js"></script>
     </head>
     <body>
         <section id="jumbo-section">
@@ -53,17 +54,49 @@
         <section id="main-section" class="container">
             <nav style="margin-bottom: 50px;;">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link" id="nav-examples-tab" data-toggle="tab" href="#nav-examples" role="tab" aria-controls="nav-contact" aria-selected="false">Examples</a>
-                    <a class="nav-item nav-link active" id="nav-setup-tab" data-toggle="tab" href="#nav-setup" role="tab" aria-controls="nav-profile" aria-selected="false">Setup</a>
+                    <a class="nav-item nav-link active" id="nav-examples-tab" data-toggle="tab" href="#nav-examples" role="tab" aria-controls="nav-contact" aria-selected="false">Examples</a>
+                    <a class="nav-item nav-link" id="nav-setup-tab" data-toggle="tab" href="#nav-setup" role="tab" aria-controls="nav-profile" aria-selected="false">Setup</a>
                     <a class="nav-item nav-link" id="nav-roadmap-tab" data-toggle="tab" href="#nav-roadmap" role="tab" aria-controls="nav-home" aria-selected="true">Roadmap</a>
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade" id="nav-examples" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <include src="views/examples.html"></include>
+                <div class="tab-pane fade show active" id="nav-examples" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <section id="examples-section">
+                        <div class="container">
+                            <div class="row">
+                                <h1>Examples</h1>
+                            </div>
+                            <hr/>
+                            <div id="invoke-name-example" class="row padding-top-bot">
+                    
+                                
+                    
+                                <h1>Invoke Name Alert</h1>
+                    
+                                <p>In this example we will enter some text into the textbox and display an alert in our xamarin app with the data. In this case the app is hardcoded to expect a name, so enter your name! 😄</p>
+                            
+                                <div id="invoke-name-form">
+                                    <div class="form-row align-items-center">
+                                        <div class="col-auto">
+                                            <label class="sr-only" for="invoke-name-entry">Your Name</label>
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">🙋‍♂️</div>
+                                                </div>
+                                                <input type="text" class="form-control" id="invoke-name-entry" placeholder="Your Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="submit" id="invoke-name-btn" class="btn btn-primary mb-2">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
 
-                <div class="tab-pane fade show active" id="nav-setup" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="tab-pane fade" id="nav-setup" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <include src="views/setup.html"></include>
                 </div>
 
@@ -86,5 +119,8 @@
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
+        <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js"></script>
+        <script src="scripts/dist/app.dev.js"></script>
     </body>
 </html>

@@ -6,6 +6,6 @@
              Title="{Binding Title}"
              IconImageSource="external_link_square_alt">
     <ContentPage.Content>
-        <controls:HybridWebView x:Name="HybridWebView" SiteSource="Browser" Uri="https://google.co.uk/"/>
+        <controls:HybridWebView Command="{Binding InvokeKeywordCommand}" SiteSource="Browser" Uri="https://google.co.uk/"/>
     </ContentPage.Content>
 </ContentPage>

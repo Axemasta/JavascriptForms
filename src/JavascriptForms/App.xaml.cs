@@ -41,7 +41,8 @@ namespace JavascriptForms
             {
                 $"createTab={nameof(NavigationPage)}|{nameof(LocalPage)}",
                 $"createTab={nameof(NavigationPage)}|{nameof(HostedPage)}",
-                $"createTab={nameof(NavigationPage)}|{nameof(ExternalPage)}"
+                $"createTab={nameof(NavigationPage)}|{nameof(ExternalPage)}",
+                $"createTab={nameof(NavigationPage)}|{nameof(BrowserDetailsPage)}"
             };
 
             if (tabs.Count() > 0)
@@ -57,6 +58,7 @@ namespace JavascriptForms
             containerRegistry.RegisterForNavigation<LocalPage, DisplayNameViewModel>();
             containerRegistry.RegisterForNavigation<HostedPage, DisplayNameViewModel>();
             containerRegistry.RegisterForNavigation<ExternalPage, ExternalPageViewModel>();
+            containerRegistry.RegisterForNavigation<BrowserDetailsPage, BrowserDetailsViewModel>();
         }
     }
 }

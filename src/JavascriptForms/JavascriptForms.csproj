@@ -14,6 +14,7 @@
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1534" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />
@@ -21,5 +22,7 @@
     <Folder Include="Pages\" />
     <Folder Include="Utils\" />
     <Folder Include="Enums\" />
+    <Folder Include="Models\" />
+    <Folder Include="Events\" />
   </ItemGroup>
 </Project>

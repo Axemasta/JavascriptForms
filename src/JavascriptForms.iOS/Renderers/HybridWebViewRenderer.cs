@@ -8,6 +8,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using JavascriptForms.Controls;
 using System.Reflection;
+using JavascriptForms.Models;
+using Newtonsoft.Json;
 
 [assembly: ExportRenderer(typeof(HybridWebView), typeof(HybridWebViewRenderer))]
 namespace JavascriptForms.iOS.Renderers
@@ -24,9 +26,9 @@ namespace JavascriptForms.iOS.Renderers
         public HybridWebViewRenderer(WKWebViewConfiguration config) : base(config)
         {
             userController = config.UserContentController;
-            var invokationScript = new WKUserScript(new NSString(JavaScriptFunction), WKUserScriptInjectionTime.AtDocumentEnd, false);
-            var jqueryScript = new WKUserScript(new NSString(LoadJquery()), WKUserScriptInjectionTime.AtDocumentEnd, false);
-            var inputSpyScript = new WKUserScript(new NSString(LoadAppJs()), WKUserScriptInjectionTime.AtDocumentEnd, false);
+            var invokationScript = new WKUserScript(new NSString(LoadScript("JavascriptForms.iOS.Scripts.InvokeCSharp.js")), WKUserScriptInjectionTime.AtDocumentEnd, false);
+            var jqueryScript = new WKUserScript(new NSString(LoadScript("JavascriptForms.iOS.Scripts.jquery-3.5.1.min.js")), WKUserScriptInjectionTime.AtDocumentEnd, false);
+            var inputSpyScript = new WKUserScript(new NSString(LoadScript("JavascriptForms.iOS.Scripts.app.js")), WKUserScriptInjectionTime.AtDocumentEnd, false);
 
             userController.AddUserScript(invokationScript);
             userController.AddUserScript(jqueryScript);
@@ -42,24 +44,9 @@ namespace JavascriptForms.iOS.Renderers
             //});
         }
 
-        private string LoadJquery()
+        private string LoadScript(string resourceName)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = "JavascriptForms.iOS.Scripts.jquery-3.5.1.min.js";
-
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                string result = reader.ReadToEnd();
-
-                return result;
-            }
-        }
-
-        private string LoadAppJs()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = "JavascriptForms.iOS.Scripts.app.js";
 
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             using (StreamReader reader = new StreamReader(stream))
@@ -79,7 +66,7 @@ namespace JavascriptForms.iOS.Renderers
                 userController.RemoveAllUserScripts();
                 userController.RemoveScriptMessageHandler("invokeAction");
                 HybridWebView hybridWebView = e.OldElement as HybridWebView;
-                hybridWebView.Cleanup();
+                //hybridWebView.Cleanup();
             }
 
             if (e.NewElement != null)
@@ -116,14 +103,16 @@ namespace JavascriptForms.iOS.Renderers
         {
             //Console.WriteLine(message.Body);
 
-            ((HybridWebView)Element).InvokeAction(message.Body.ToString());
+            IBrowserInvocation args = JsonConvert.DeserializeObject<BrowserInvocation>(message.Body.ToString());
+
+            ((HybridWebView)Element).InvokeAction(args);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                ((HybridWebView)Element).Cleanup();
+                //((HybridWebView)Element).Cleanup();
             }
             base.Dispose(disposing);
         }
