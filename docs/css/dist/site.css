@@ -14,3 +14,8 @@
 #footer-section {
   margin-top: 100px;
 }
+
+.padding-top-bot {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
