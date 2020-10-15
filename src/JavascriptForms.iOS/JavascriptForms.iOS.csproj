@@ -132,6 +132,12 @@
     <ImageAsset Include="Assets.xcassets\map_marked_alt.imageset\Contents.json">
       <Visible>False</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\safari.imageset\safari%403x.png" />
+    <ImageAsset Include="Assets.xcassets\safari.imageset\safari%402x.png" />
+    <ImageAsset Include="Assets.xcassets\safari.imageset\safari.png" />
+    <ImageAsset Include="Assets.xcassets\safari.imageset\Contents.json">
+      <Visible>False</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -158,11 +164,17 @@
   <ItemGroup>
     <Folder Include="Renderers\" />
     <Folder Include="Content\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Content\index.html" />
     <BundleResource Include="Resources\FontAwesome5Solid.otf" />
     <BundleResource Include="Resources\FontAwesome5Regular.otf" />
     <BundleResource Include="Resources\FontAwesome5Brands.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\jquery-3.5.1.min.js" />
+    <EmbeddedResource Include="Scripts\app.js" />
+    <EmbeddedResource Include="Scripts\InvokeCSharp.js" />
   </ItemGroup>
 </Project>

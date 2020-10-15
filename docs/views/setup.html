@@ -1,0 +1,97 @@
+<section id="setup-section">
+    </div class="row">              
+        <div class="col-md-12">
+            <p>TODO: Render markdown here so I can be lazy and write my docs in md 🥵</p>
+            <textarea id="raw-setup-md" rows="85" style="width: 100%;">
+# Setup
+
+This section explains how you can setup your Xamarin Forms application to be able to inject, intercept & invoke events within your app.
+
+We will be using `WebView` as our primary browser, this will renderer down to native implemenations:
+
+- `WkWebView` on iOS
+- `GoogleChrome` on Android
+
+![The official xamarin](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/custom-renderer/hybridwebview-images/webview-classes.png)
+
+A custom renderer will be used so to make things less likely to interfere with other components, we will subclass `WebView` and create `HybridWebView`:
+
+```
+public class HybridWebView : WebView
+{
+Action<string> action;
+
+public static readonly BindableProperty UriProperty = BindableProperty.Create(
+propertyName: nameof(Uri),
+returnType: typeof(string),
+declaringType: typeof(HybridWebView),
+defaultValue: default(string));
+
+public string Uri
+{
+get { return (string)GetValue(UriProperty); }
+set { SetValue(UriProperty, value); }
+}
+
+public void RegisterAction(Action<string> callback)
+{
+action = callback;
+}
+
+public void Cleanup()
+{
+action = null;
+}
+
+public void InvokeAction(string data)
+{
+if (action == null || data == null)
+{
+return;
+}
+action.Invoke(data);
+}
+}
+```
+
+You can reference this webview in xaml:
+
+```xml
+<ContentPage ...
+xmlns:controls="clr-namespace:YourNameSpace;assembly=CustomRenderer"
+x:Class="YourNameSpace.HybridWebViewPage"
+Padding="0,40,0,0">
+<controls:HybridWebView x:Name="hybridWebView"
+    Uri="https://axemasta.github.io/JavascriptForms/" />
+</ContentPage>
+```
+
+or from codebehind:
+
+```csharp
+public HybridWebViewPage()
+{
+var hybridWebView = new HybridWebView
+{
+Uri = "https://axemasta.github.io/JavascriptForms/"
+};
+
+Content = hybridWebView;
+}
+```
+
+You can subscribe to the `RegisterAction` method in codebehind to handle the events invoked by the control:
+
+```csharp
+HybridWebView.RegisterAction(args => Console.WriteLine("WebView action invoked with args: " + args));
+```
+            </textarea>
+
+            <div id="rendered-setup-md">
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://morgan3d.github.io/include.js/include.min.js"></script> 

@@ -6,6 +6,6 @@
              Title="Local Page"
              IconImageSource="map_marked_alt">
     <ContentPage.Content>
-        <controls:HybridWebView x:Name="HybridWebView" SiteSource="Local" Uri="index.html"/>
+        <controls:HybridWebView Command="{Binding InvokeNameCommand}" SiteSource="Local" Uri="index.html"/>
     </ContentPage.Content>
 </ContentPage>

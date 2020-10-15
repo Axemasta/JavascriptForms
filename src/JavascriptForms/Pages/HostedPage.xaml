@@ -6,6 +6,6 @@
              Title="Hosted Page"
              IconImageSource="globe_europe">
     <ContentPage.Content>
-        <controls:HybridWebView x:Name="HybridWebView" SiteSource="Browser" Uri="https://axemasta.github.io/JavascriptForms/"/>
+        <controls:HybridWebView Command="{Binding InvokeNameCommand}" SiteSource="Browser" Uri="https://axemasta.github.io/JavascriptForms/"/>
     </ContentPage.Content>
 </ContentPage>

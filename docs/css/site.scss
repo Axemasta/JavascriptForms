@@ -17,3 +17,34 @@
 #footer-section {
     margin-top: 100px;
 }
+
+.padding-top-bot {
+    padding-top: 25px;
+    padding-bottom: 25px;;
+}
+
+button i {
+    margin-right: 5px;
+}
+
+.listening-status {
+    .fas {
+        margin-left: 5px;
+    }
+}
+
+.status-listening {
+    color: green;
+}
+
+.status-stopped {
+    color: darkred;
+}
+
+code {
+    background-color: rgba(27,31,35,.05);
+    margin: 0;
+    padding: .2em .4em;
+    color: black;
+    border-radius: 6px;
+}

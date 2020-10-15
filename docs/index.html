@@ -6,6 +6,9 @@
         <title>Javascript Forms</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
         <link rel="stylesheet" href="css/dist/site.css">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+        <script src="https://morgan3d.github.io/include.js/include.min.js"></script>
     </head>
     <body>
         <section id="jumbo-section">
@@ -38,14 +41,13 @@
                     <br />
                     <br />
                     <h1 class="display-1">Javascript Forms</h1>
-                    <h3>Local</h3>
+                    <h3 hidden>Local</h3>
                     <p>
                         This Proof Of Concept (POC) provides an example implementation of javascript invokation in xamarin forms.
                     </p>
                     <p>
                         Developed from the official Xamarin.Forms samples repository (<a href="https://github.com/xamarin/xamarin-forms-samples/tree/master/CustomRenderers/HybridWebView" target="_blank">HybridWebView</a>), I have built upon the example allowing more complex invokation of javascript.
                     </p>
-                    
                 </div>
             </div>
         </section>
@@ -63,56 +65,82 @@
                     <section id="examples-section">
                         <div class="container">
                             <div class="row">
-                                <h1>Examples</h1>
-                                <br/><br/><br/><br/>
+                                <div class="col-md-12">
+                                    <h1>Examples</h1>
+                                    <p>Here are some examples of javascript invokation in a Xamarin Forms webview. If you are viewing from the sample app, the events will be executing from the viewmodels (C# code). If you are viewing from another browser, the <code>invokeCSAction</code> method will just log to the console, open the developer console to view the output.</p>
+                                </div>
                             </div>
-            
-                            <div id="invoke-name-example" class="row">
-                                <h1>Invoke Name Alert</h1>
-            
-                                <p>In this example we will enter some text into the textbox and display an alert in our xamarin app with the data. In this case the app is hardcoded to expect a name, so enter your name! 😄</p>
-                            
-                                <div id="invoke-name-form">
-                                    <div class="form-row align-items-center">
-                                        <div class="col-auto">
-                                            <label class="sr-only" for="invoke-name-entry">Your Name</label>
-                                            <div class="input-group mb-2">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text">🙋‍♂️</div>
+                            <hr/>
+                            <div id="invoke-name-example" class="row padding-top-bot">
+                                <div class="col-md-12">
+                                    <h1>Invoke Name Alert</h1>
+                                    <p>In this example we will enter some text into the textbox and display an alert in our xamarin app with the data. In this case the app is hardcoded to expect a name, so enter your name! 😄</p>
+                                    <div id="invoke-name-form">
+                                        <div class="form-row align-items-center">
+                                            <div class="col-auto">
+                                                <label class="sr-only" for="invoke-name-entry">Your Name</label>
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">🙋‍♂️</div>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="invoke-name-entry" placeholder="Your Name">
                                                 </div>
-                                                <input type="text" class="form-control" id="invoke-name-entry" placeholder="Your Name">
                                             </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <button type="submit" id="invoke-name-btn" class="btn btn-primary mb-2">Submit</button>
+                                            <div class="col-auto">
+                                                <button type="submit" id="invoke-name-btn" class="btn btn-primary mb-2"><i class="fas fa-paper-plane"></i>Submit</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>   
+                            </div>
+                            <hr/>
+                            <div id="intercept-keypress-example" class="row padding-top-bot">
+                                <div class="col-md-12">
+                                    <h1>Intercept Keypresses</h1>
+                                    <p>In this example we will intercept the key press events within the browser. If the user types any of the forbidden keywords an alert will be invoked.</p>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label for="exampleFormControlTextarea1">Example textarea</label>
+                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" style="margin-bottom: 15px;"></textarea>
+                                      <button type="submit" id="intercept-keys-start-btn" class="btn btn-success"><i class="fas fa-headphones"></i>Listen</button>
+                                      <button type="submit" id="intercept-keys-stop-btn" class="btn btn-danger"><i class="fas fa-hand-paper"></i>Stop</button>
+                                    </div>
+                                    <div id="accordionExample">
+                                        <div class="card">
+                                            <div class="card-header" id="headingOne">
+                                                <h5 class="mb-0">
+                                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                                                        aria-expanded="true" aria-controls="collapseOne">
+                                                        Typing History <i class="fas fa-history"></i>
+                                                    </button>
+                                                </h5>
+                                            </div>
+                                    
+                                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <label for="historyTextArea">Here is your typing history, collected whilst the keyboard listener is active! 😀</label>
+                                                        <p><small class="text-muted">Listening Status: </small><span class="listening-status status-stopped"><span>Stopped</span><i class="fas fa-stop"></i></span></p>
+                                                        <textarea class="form-control" id="historyTextArea" rows="3" style="margin-bottom: 15px;" disabled></textarea>
+                                                        <button type="submit" id="intercept-keys-clear-btn" class="btn btn-dark"><i class="fas fa-ban"></i>Clear History</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </section>
                 </div>
 
                 <div class="tab-pane fade" id="nav-setup" role="tabpanel" aria-labelledby="nav-profile-tab">
-                    <section id="setup-section">
-                        <h1>Setup</h1>
-                        <p>This section explains how you can setup your Xamarin Forms application to be able to inject, intercept & invoke events within your app.</p>
-                    </section>
+                    <include src="views/setup.html"></include>
                 </div>
 
                 <div class="tab-pane fade" id="nav-roadmap" role="tabpanel" aria-labelledby="nav-home-tab">
-                    <section id="roadmap-section">
-                        <h1>Roadmap</h1>
-                        <p>I would like to get the following features working in this POC:</p>
-                        <ul>
-                            <li>Invoke Javascript In Xamarin Forms App <input type="checkbox" checked></li>
-                            <li>Pass Data From <strong>My</strong> Local Javascript To App <input type="checkbox"></li>
-                            <li>Pass Data From <strong>My</strong> Website Javascript To App <input type="checkbox"></li>
-                            <li>Invoke Data From <strong>External</strong> Website To My App <input type="checkbox"></li>
-                            <li>Create Generic Payload For Javascript So Only 1 Invokation Event Required<input type="checkbox"></li>
-                            <li>Typescript <input type="checkbox"></li>
-                        </ul>
-                    </section>
+                    <include src="views/roadmap.html"></include>
                 </div>
               </div>
             </nav>
@@ -130,6 +158,9 @@
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
+        <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js"></script>
+        <script src="scripts/dist/site.dev.js"></script>
         <script src="scripts/dist/app.dev.js"></script>
     </body>
 </html>

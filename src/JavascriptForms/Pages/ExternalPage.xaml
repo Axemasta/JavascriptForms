@@ -2,9 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JavascriptForms.Pages.ExternalPage"
+             xmlns:controls="clr-namespace:JavascriptForms.Controls"
              Title="{Binding Title}"
              IconImageSource="external_link_square_alt">
     <ContentPage.Content>
-        <Label Text="TODO: Example of event interception in external page" HorizontalOptions="Center" VerticalOptions="Center"/>
+        <controls:HybridWebView Command="{Binding InvokeKeywordCommand}" SiteSource="Browser" Uri="https://google.co.uk/"/>
     </ContentPage.Content>
 </ContentPage>

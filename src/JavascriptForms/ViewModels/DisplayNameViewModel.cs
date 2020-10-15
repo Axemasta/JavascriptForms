@@ -1,4 +1,8 @@
-﻿using Prism.Commands;
+﻿using System.Diagnostics;
+using JavascriptForms.Events;
+using JavascriptForms.Models;
+using Prism.Commands;
+using Prism.Events;
 using Prism.Services;
 
 namespace JavascriptForms.ViewModels
@@ -6,19 +10,25 @@ namespace JavascriptForms.ViewModels
     public class DisplayNameViewModel : ViewModelBase
     {
         private readonly IPageDialogService _dialogService;
+        private readonly IEventAggregator _eventAggregator;
 
-        public DelegateCommand<string> InvokeNameCommand { get; private set; }
+        public DelegateCommand<IBrowserInvocation> InvokeNameCommand { get; private set; }
 
-        public DisplayNameViewModel(IPageDialogService dialogService)
+        public DisplayNameViewModel(IPageDialogService dialogService, IEventAggregator eventAggregator)
         {
             _dialogService = dialogService;
+            _eventAggregator = eventAggregator;
 
-            InvokeNameCommand = new DelegateCommand<string>(OnInvokeName);
+            InvokeNameCommand = new DelegateCommand<IBrowserInvocation>(OnInvokeName);
         }
 
-        public async void OnInvokeName(string name)
+        public async void OnInvokeName(IBrowserInvocation data)
         {
-            await _dialogService.DisplayAlertAsync($"Hello {name}", $"If you are reading your name ({name}), the javascript invokation was successful!", "OK");
+            _eventAggregator.GetEvent<BrowserInvokedEvent>().Publish(data);
+
+            await _dialogService.DisplayAlertAsync($"Hello {data.Data}", $"If you are reading your name ({data.Data}), the javascript invokation was successful!", "OK");
+
+            Debug.WriteLine($"Browser detected keyword: {data.Data} found at url: {data.BrowserUrl}");
         }
     }
 }
