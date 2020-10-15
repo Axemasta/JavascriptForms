@@ -191,6 +191,7 @@
     <Folder Include="Resources\drawable\" />
     <Folder Include="Renderers\" />
     <Folder Include="Assets\Content\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JavascriptForms\JavascriptForms.csproj">
@@ -203,6 +204,9 @@
     <AndroidAsset Include="Assets\FontAwesome5Solid.otf" />
     <AndroidAsset Include="Assets\FontAwesome5Regular.otf" />
     <AndroidAsset Include="Assets\FontAwesome5Brands.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\AndroidInvoker.js" />
   </ItemGroup>
  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

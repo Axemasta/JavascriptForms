@@ -173,8 +173,6 @@
     <BundleResource Include="Resources\FontAwesome5Brands.otf" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Scripts\jquery-3.5.1.min.js" />
-    <EmbeddedResource Include="Scripts\app.js" />
-    <EmbeddedResource Include="Scripts\InvokeCSharp.js" />
+    <EmbeddedResource Include="Scripts\iOSInvoker.js" />
   </ItemGroup>
 </Project>

@@ -11,5 +11,5 @@
 
     var json = JSON.stringify(browserInvocation);
 
-    window.webkit.messageHandlers.invokeAction.postMessage(json);
+    invokeNative(json);
 }
