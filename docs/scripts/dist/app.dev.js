@@ -12,25 +12,23 @@ $(document).ready(function () {
   if (mobile) {
     SpyOnUser();
   } else {
-    var _invokeCSharpAction = function _invokeCSharpAction(data, elementCoords, screenSize, browserDetails, elementId) {
-      var browserInvocation = {
-        BrowserUrl: window.location.href,
-        Data: data,
-        ElementCoordinates: elementCoords,
-        DisplayDimensions: screenSize,
-        BrowserInfo: browserDetails,
-        ElementName: elementId
-      };
-      var json = JSON.stringify(browserInvocation);
-      console.log('this is the dummy invoke method: ' + json);
-    };
-
     $('#intercept-keys-start-btn').on('click', function () {
       SpyOnUser(true);
     });
     $('#intercept-keys-stop-btn').on('click', function () {
       SpyOnUser(false);
-    });
+    }); // function invokeCSharpAction(data, elementCoords, screenSize, browserDetails, elementId) {
+    //     var browserInvocation = {
+    //         BrowserUrl: window.location.href,
+    //         Data: data,
+    //         ElementCoordinates: elementCoords,
+    //         DisplayDimensions: screenSize,
+    //         BrowserInfo: browserDetails,
+    //         ElementName: elementId
+    //     };
+    //     var json = JSON.stringify(browserInvocation);
+    //     console.log('this is the dummy invoke method: ' + json);
+    // }
   }
 
   function SetListeningStatus(listening) {

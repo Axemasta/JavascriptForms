@@ -20,9 +20,10 @@ I'm not sure what the limits are yet but I would like to:
 
 Since I've not documented much yet, here are some screenshots :)
 
-| Invoke Locally       | ![Invoke Locally In Sample App](docs/assets/invoke-locally.png) |
-| -------------------- | ------------------------------------------------------------ |
-| Invoke Hosted        | ![Invoke Hosted In Sample App](docs/assets/invoke-hosted.png) |
-| Invoke External      | ![Invoke Externally In Sample App](docs/assets/invoke-external.png) |
-| Browser Details Page | ![Browser Details Page](docs/assets/browser-details.png)     |
+|                      | iOS                                                          | Android                                                      |
+| -------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Invoke Locally       | ![Invoke Locally In Sample App on iOS](docs/assets/ios/invoke-locally.png) | ![Invoke Locally In Sample App on Android](docs/assets/android/invoke-locally.png) |
+| Invoke Hosted        | ![Invoke Hosted In Sample App on iOS](docs/assets/ios/invoke-hosted.png) | ![Invoke Hosted In Sample App on Android](docs/assets/android/invoke-hosted.png) |
+| Invoke External      | ![Invoke Externally In Sample App on iOS](docs/assets/ios/invoke-external.png) | ![Invoke Externally In Sample App on Android](docs/assets/android/invoke-external.png) |
+| Browser Details Page | ![Browser Details Page on iOS](docs/assets/ios/browser-details.png) | ![Browser Details Page on Android](docs/assets/android/browser-details.png) |
 
