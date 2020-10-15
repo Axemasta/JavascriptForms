@@ -94,8 +94,6 @@ namespace JavascriptForms.iOS.Renderers
                     default:
                         throw new NotImplementedException($"SiteSource:{hybridWebView.SiteSource} has not been implemented");
                 }
-
-                
             }
         }
 

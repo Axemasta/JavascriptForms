@@ -11,5 +11,7 @@
         public Coordinates DisplayDimensions { get; set; }
 
         public BrowserInfo BrowserInfo { get; set; }
+
+        public string ElementName { get; set; }
     }
 }

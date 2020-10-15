@@ -1,19 +1,81 @@
 "use strict";
 
 $(document).ready(function () {
-  var secretWords = ['cat', 'dog', 'Hello'];
+  var mobile = false;
+  var secretWords = ['cat', 'dog', 'hello'];
   $('#invoke-name-btn').on('click', function () {
     console.log('submitting');
     invokeCSCode($('#invoke-name-entry').val(), this);
   });
-  $('input').on('click', function () {
-    console.log('An input was clicked!!!');
-    var text = $(this).val();
 
-    if (secretWords.includes(text.toLowerCase())) {
-      invokeCSCode(text, this);
+  if (mobile) {
+    SpyOnUser();
+  } else {
+    $('#intercept-keys-start-btn').on('click', function () {
+      SpyOnUser(true);
+    });
+    $('#intercept-keys-stop-btn').on('click', function () {
+      SpyOnUser(false);
+    });
+  }
+
+  function SetListeningStatus(listening) {
+    var control = $('.listening-status');
+    var icon = control.find('i');
+    var text = control.find('span');
+
+    if (listening) {
+      text.text('Listening');
+      control.removeClass('status-stopped');
+      control.addClass('status-listening');
+      icon.removeClass('fa-stop');
+      icon.addClass('fa-spinner fa-pulse');
+    } else {
+      text.text('Stopped');
+      control.addClass('status-stopped');
+      control.removeClass('status-listening');
+      icon.addClass('fa-stop');
+      icon.removeClass('fa-spinner fa-pulse');
     }
-  }); // RenderMarkdown();
+  }
+
+  function SpyOnUser(start) {
+    if (!start) {
+      console.log('ending spy session');
+      document.onkeypress = null;
+      userInputs = [];
+      SetListeningStatus(false);
+      return;
+    }
+
+    SetListeningStatus(true);
+    console.log('now spying on user');
+    var userInputs = [];
+    $('#historyTextArea').text('');
+    $('#intercept-keys-clear-btn').on('click', function () {
+      $('#historyTextArea').text('');
+      userInputs = [];
+    }); //Output key press
+
+    document.onkeypress = function (e) {
+      e = e || window.event;
+      userInputs.push(e.key);
+      var joined = userInputs.join('');
+
+      if (secretWords.includes(joined.toLowerCase())) {
+        try {
+          invokeCSCode(joined, $(':focus'));
+          userInputs = [];
+        } catch (err) {
+          console.log(err);
+          userInputs = [];
+        }
+      } // console.log('you typed: ' + joined);
+
+
+      $('#historyTextArea').text(joined);
+    };
+  } // RenderMarkdown();
   // function RenderMarkdown() {
   //     console.log('rendering markdown');
   //     try {
@@ -28,6 +90,7 @@ $(document).ready(function () {
   //         console.log(err);
   //     }
   // }
+
 });
 
 function collectBrowserDetails() {
@@ -97,27 +160,49 @@ function invokeCSCode(data, source) {
 
   try {
     var sourceNative = $(source)[0];
-    var elementCoords = {
-      X: sourceNative.getBoundingClientRect().left,
-      Y: sourceNative.getBoundingClientRect().top
-    };
-    var screenSize = {
-      X: Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0),
-      Y: Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-    };
-    invokeCSharpAction(data, elementCoords, screenSize, collectBrowserDetails());
+
+    try {
+      var elementCoords = {
+        X: sourceNative.getBoundingClientRect().left,
+        Y: sourceNative.getBoundingClientRect().top
+      };
+    } catch (_unused) {
+      var elementCoords = {
+        X: null,
+        Y: null
+      };
+    }
+
+    try {
+      var screenSize = {
+        X: Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0),
+        Y: Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+      };
+    } catch (_unused2) {
+      var screenSize = {
+        X: null,
+        Y: null
+      };
+    }
+
+    var sourceId = $(source).attr('id');
+    var elementId = sourceId != null ? sourceId : "Unknown";
+    invokeCSharpAction(data, elementCoords, screenSize, collectBrowserDetails(), elementId);
   } catch (err) {
     console.log(err);
     alert('An error occurred invoking c# action: ' + err);
   }
-} // function invokeCSharpAction(data, elementCoords, screenSize, browserDetails) {
-//     var browserInvocation = {
-//         BrowserUrl: window.location.href,
-//         Data: data,
-//         ElementCoordinates: elementCoords,
-//         DisplayDimensions: screenSize,
-//         BrowserInfo: browserDetails
-//     };
-//     var json = JSON.stringify(browserInvocation);
-//     console.log(json);
-// }
+}
+
+function invokeCSharpAction(data, elementCoords, screenSize, browserDetails, elementId) {
+  var browserInvocation = {
+    BrowserUrl: window.location.href,
+    Data: data,
+    ElementCoordinates: elementCoords,
+    DisplayDimensions: screenSize,
+    BrowserInfo: browserDetails,
+    ElementName: elementId
+  };
+  var json = JSON.stringify(browserInvocation);
+  console.log(json);
+}

@@ -12,5 +12,7 @@ namespace JavascriptForms.Models
         Coordinates DisplayDimensions { get; }
 
         BrowserInfo BrowserInfo { get; }
+
+        string ElementName { get; }
     }
 }

@@ -19,3 +19,19 @@
   padding-top: 25px;
   padding-bottom: 25px;
 }
+
+button i {
+  margin-right: 5px;
+}
+
+.listening-status .fas {
+  margin-left: 5px;
+}
+
+.status-listening {
+  color: green;
+}
+
+.status-stopped {
+  color: darkred;
+}

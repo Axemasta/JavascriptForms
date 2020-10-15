@@ -1,6 +1,7 @@
 $(document).ready(function () {
 
-    var secretWords = ['cat', 'dog', 'Hello'];
+    var mobile = false;
+    var secretWords = ['cat', 'dog', 'hello'];
 
     $('#invoke-name-btn').on('click', function () {
 
@@ -9,16 +10,88 @@ $(document).ready(function () {
         invokeCSCode($('#invoke-name-entry').val(), this);
     });
 
-    $('input').on('click', function () {
+    if (mobile) {
+        SpyOnUser();
+    }
+    else {
+        $('#intercept-keys-start-btn').on('click', function () {
 
-        console.log('An input was clicked!!!');
+            SpyOnUser(true);
+        });
 
-        var text = $(this).val();
+        $('#intercept-keys-stop-btn').on('click', function () {
 
-        if (secretWords.includes(text.toLowerCase())) {
-            invokeCSCode(text, this);
+            SpyOnUser(false);
+        });
+    }
+
+    function SetListeningStatus(listening) {
+
+        var control = $('.listening-status');
+        var icon = control.find('i');
+        var text = control.find('span');
+
+        if (listening) {
+            text.text('Listening')
+            control.removeClass('status-stopped');
+            control.addClass('status-listening');
+            icon.removeClass('fa-stop');
+            icon.addClass('fa-spinner fa-pulse');
         }
-    });
+        else {
+            text.text('Stopped')
+            control.addClass('status-stopped');
+            control.removeClass('status-listening');
+            icon.addClass('fa-stop');
+            icon.removeClass('fa-spinner fa-pulse');
+        }
+    }
+
+    function SpyOnUser(start) {
+
+        if (!start) {
+            console.log('ending spy session');
+            document.onkeypress = null;
+            userInputs = [];
+            SetListeningStatus(false);
+            return;
+        }
+
+        SetListeningStatus(true);
+
+        console.log('now spying on user');
+        var userInputs = [];
+        $('#historyTextArea').text('');
+
+        $('#intercept-keys-clear-btn').on('click', function () {
+
+            $('#historyTextArea').text('');
+            userInputs = [];
+        });
+
+        //Output key press
+        document.onkeypress = function (e) {
+            e = e || window.event;
+
+            userInputs.push(e.key);
+
+            var joined = userInputs.join('');
+
+            if (secretWords.includes(joined.toLowerCase())) {
+                try {
+                    invokeCSCode(joined, $(':focus'));
+                    userInputs = [];
+                }
+                catch (err) {
+                    console.log(err);
+                    userInputs = [];
+                }
+            }
+
+            // console.log('you typed: ' + joined);
+            $('#historyTextArea').text(joined);
+        }
+    }
 
     // RenderMarkdown();
 
@@ -124,18 +197,37 @@ function invokeCSCode(data, source) {
 
         var sourceNative = $(source)[0];
 
+        try {
+            var elementCoords = {
+                X : sourceNative.getBoundingClientRect().left,
+                Y : sourceNative.getBoundingClientRect().top
+            };
+        }
+        catch {
+            var elementCoords = {
+                X : null,
+                Y : null
+            };
+        }
 
-        var elementCoords = {
-            X : sourceNative.getBoundingClientRect().left,
-            Y : sourceNative.getBoundingClientRect().top
-        };
+        try {
+            var screenSize = {
+                X : Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0),
+                Y : Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+            };
+        }
+        catch {
+            var screenSize = {
+                X : null,
+                Y : null
+            };
+        }
 
-        var screenSize = {
-            X : Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0),
-            Y : Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-        };
+        var sourceId = $(source).attr('id');
 
-        invokeCSharpAction(data, elementCoords, screenSize, collectBrowserDetails());
+        var elementId = sourceId != null ? sourceId : "Unknown";
+
+        invokeCSharpAction(data, elementCoords, screenSize, collectBrowserDetails(), elementId);
     }
     catch (err) {
         console.log(err);
@@ -143,17 +235,18 @@ function invokeCSCode(data, source) {
     }
 }
 
-// function invokeCSharpAction(data, elementCoords, screenSize, browserDetails) {
+function invokeCSharpAction(data, elementCoords, screenSize, browserDetails, elementId) {
 
-//     var browserInvocation = {
-//         BrowserUrl: window.location.href,
-//         Data: data,
-//         ElementCoordinates: elementCoords,
-//         DisplayDimensions: screenSize,
-//         BrowserInfo: browserDetails
-//     };
+    var browserInvocation = {
+        BrowserUrl: window.location.href,
+        Data: data,
+        ElementCoordinates: elementCoords,
+        DisplayDimensions: screenSize,
+        BrowserInfo: browserDetails,
+        ElementName: elementId
+    };
 
-//     var json = JSON.stringify(browserInvocation);
+    var json = JSON.stringify(browserInvocation);
 
-//     console.log(json);
-// }
+    console.log(json);
+}

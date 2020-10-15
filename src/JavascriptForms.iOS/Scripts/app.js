@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
 
-    var secretWords = ['cat', 'dog', 'Hello'];
+    var mobile = true;
+    var secretWords = ['cat', 'dog', 'hello'];
 
     $('#invoke-name-btn').on('click', function () {
 
@@ -9,16 +10,88 @@
         invokeCSCode($('#invoke-name-entry').val(), this);
     });
 
-    $('input').on('click', function () {
+    if (mobile) {
+        SpyOnUser(true);
+    }
+    else {
+        $('#intercept-keys-start-btn').on('click', function () {
 
-        console.log('An input was clicked!!!');
+            SpyOnUser(true);
+        });
 
-        var text = $(this).val();
+        $('#intercept-keys-stop-btn').on('click', function () {
 
-        if (secretWords.includes(text.toLowerCase())) {
-            invokeCSCode(text, this);
+            SpyOnUser(false);
+        });
+    }
+
+    function SetListeningStatus(listening) {
+
+        var control = $('.listening-status');
+        var icon = control.find('i');
+        var text = control.find('span');
+
+        if (listening) {
+            text.text('Listening')
+            control.removeClass('status-stopped');
+            control.addClass('status-listening');
+            icon.removeClass('fa-stop');
+            icon.addClass('fa-spinner fa-pulse');
         }
-    });
+        else {
+            text.text('Stopped')
+            control.addClass('status-stopped');
+            control.removeClass('status-listening');
+            icon.addClass('fa-stop');
+            icon.removeClass('fa-spinner fa-pulse');
+        }
+    }
+
+    function SpyOnUser(start) {
+
+        if (!start) {
+            console.log('ending spy session');
+            document.onkeypress = null;
+            userInputs = [];
+            SetListeningStatus(false);
+            return;
+        }
+
+        SetListeningStatus(true);
+
+        console.log('now spying on user');
+        var userInputs = [];
+        $('#historyTextArea').text('');
+
+        $('#intercept-keys-clear-btn').on('click', function () {
+
+            $('#historyTextArea').text('');
+            userInputs = [];
+        });
+
+        //Output key press
+        document.onkeypress = function (e) {
+            e = e || window.event;
+
+            userInputs.push(e.key);
+
+            var joined = userInputs.join('');
+
+            if (secretWords.includes(joined.toLowerCase())) {
+                try {
+                    invokeCSCode(joined, $(':focus'));
+                    userInputs = [];
+                }
+                catch (err) {
+                    console.log(err);
+                    userInputs = [];
+                }
+            }
+
+            // console.log('you typed: ' + joined);
+            $('#historyTextArea').text(joined);
+        }
+    }
 
     // RenderMarkdown();
 
@@ -31,7 +104,7 @@
     //         var target = $('#rendered-setup-md');
     //         var converter = new showdown.Converter();
     //         var html = converter.makeHtml(text);
-    
+
     //         target.html(html);
 
     //         // $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
@@ -46,68 +119,67 @@ function collectBrowserDetails() {
 
     var nVer = navigator.appVersion;
     var nAgt = navigator.userAgent;
-    var browserName  = navigator.appName;
-    var fullVersion  = ''+parseFloat(navigator.appVersion); 
-    var majorVersion = parseInt(navigator.appVersion,10);
-    var nameOffset,verOffset,ix;
-    
+    var browserName = navigator.appName;
+    var fullVersion = '' + parseFloat(navigator.appVersion);
+    var majorVersion = parseInt(navigator.appVersion, 10);
+    var nameOffset, verOffset, ix;
+
     // In Opera, the true version is after "Opera" or after "Version"
-    if ((verOffset=nAgt.indexOf("Opera"))!=-1) {
-     browserName = "Opera";
-     fullVersion = nAgt.substring(verOffset+6);
-     if ((verOffset=nAgt.indexOf("Version"))!=-1) 
-       fullVersion = nAgt.substring(verOffset+8);
+    if ((verOffset = nAgt.indexOf("Opera")) != -1) {
+        browserName = "Opera";
+        fullVersion = nAgt.substring(verOffset + 6);
+        if ((verOffset = nAgt.indexOf("Version")) != -1)
+            fullVersion = nAgt.substring(verOffset + 8);
     }
     // In MSIE, the true version is after "MSIE" in userAgent
-    else if ((verOffset=nAgt.indexOf("MSIE"))!=-1) {
-     browserName = "Microsoft Internet Explorer";
-     fullVersion = nAgt.substring(verOffset+5);
+    else if ((verOffset = nAgt.indexOf("MSIE")) != -1) {
+        browserName = "Microsoft Internet Explorer";
+        fullVersion = nAgt.substring(verOffset + 5);
     }
     // In Chrome, the true version is after "Chrome" 
-    else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
-     browserName = "Chrome";
-     fullVersion = nAgt.substring(verOffset+7);
+    else if ((verOffset = nAgt.indexOf("Chrome")) != -1) {
+        browserName = "Chrome";
+        fullVersion = nAgt.substring(verOffset + 7);
     }
     // In Safari, the true version is after "Safari" or after "Version" 
-    else if ((verOffset=nAgt.indexOf("Safari"))!=-1) {
-     browserName = "Safari";
-     fullVersion = nAgt.substring(verOffset+7);
-     if ((verOffset=nAgt.indexOf("Version"))!=-1) 
-       fullVersion = nAgt.substring(verOffset+8);
+    else if ((verOffset = nAgt.indexOf("Safari")) != -1) {
+        browserName = "Safari";
+        fullVersion = nAgt.substring(verOffset + 7);
+        if ((verOffset = nAgt.indexOf("Version")) != -1)
+            fullVersion = nAgt.substring(verOffset + 8);
     }
     // In Firefox, the true version is after "Firefox" 
-    else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
-     browserName = "Firefox";
-     fullVersion = nAgt.substring(verOffset+8);
+    else if ((verOffset = nAgt.indexOf("Firefox")) != -1) {
+        browserName = "Firefox";
+        fullVersion = nAgt.substring(verOffset + 8);
     }
     // In most other browsers, "name/version" is at the end of userAgent 
-    else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < 
-              (verOffset=nAgt.lastIndexOf('/')) ) 
-    {
-     browserName = nAgt.substring(nameOffset,verOffset);
-     fullVersion = nAgt.substring(verOffset+1);
-     if (browserName.toLowerCase()==browserName.toUpperCase()) {
-      browserName = navigator.appName;
-     }
+    else if ((nameOffset = nAgt.lastIndexOf(' ') + 1) <
+        (verOffset = nAgt.lastIndexOf('/'))) {
+        browserName = nAgt.substring(nameOffset, verOffset);
+        fullVersion = nAgt.substring(verOffset + 1);
+        if (browserName.toLowerCase() == browserName.toUpperCase()) {
+            browserName = navigator.appName;
+        }
     }
     // trim the fullVersion string at semicolon/space if present
-    if ((ix=fullVersion.indexOf(";"))!=-1)
-       fullVersion=fullVersion.substring(0,ix);
-    if ((ix=fullVersion.indexOf(" "))!=-1)
-       fullVersion=fullVersion.substring(0,ix);
-    
-    majorVersion = parseInt(''+fullVersion,10);
+    if ((ix = fullVersion.indexOf(";")) != -1)
+        fullVersion = fullVersion.substring(0, ix);
+    if ((ix = fullVersion.indexOf(" ")) != -1)
+        fullVersion = fullVersion.substring(0, ix);
+
+    majorVersion = parseInt('' + fullVersion, 10);
     if (isNaN(majorVersion)) {
-     fullVersion  = ''+parseFloat(navigator.appVersion); 
-     majorVersion = parseInt(navigator.appVersion,10);
+        fullVersion = '' + parseFloat(navigator.appVersion);
+        majorVersion = parseInt(navigator.appVersion, 10);
     }
-    
+
     var browserInfo = {
-        Name : browserName,
-        FullVersion : fullVersion,
-        MajorVersion : majorVersion,
-        NavigatorAppName : navigator.appName,
-        NavigatorUserAgent : navigator.userAgent
+        Name: browserName,
+        FullVersion: fullVersion,
+        MajorVersion: majorVersion,
+        NavigatorAppName: navigator.appName,
+        NavigatorUserAgent: navigator.userAgent
     };
 
     return browserInfo;
@@ -124,21 +196,37 @@ function invokeCSCode(data, source) {
 
         var sourceNative = $(source)[0];
 
-        if (sourceNative == null) {
-            return;
+        try {
+            var elementCoords = {
+                X: sourceNative.getBoundingClientRect().left,
+                Y: sourceNative.getBoundingClientRect().top
+            };
+        }
+        catch {
+            var elementCoords = {
+                X: null,
+                Y: null
+            };
         }
 
-        var elementCoords = {
-            X : sourceNative.getBoundingClientRect().left,
-            Y : sourceNative.getBoundingClientRect().top
-        };
+        try {
+            var screenSize = {
+                X: Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0),
+                Y: Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+            };
+        }
+        catch {
+            var screenSize = {
+                X: null,
+                Y: null
+            };
+        }
 
-        var screenSize = {
-            X : Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0),
-            Y : Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-        };
+        var sourceId = $(source).attr('id');
 
-        invokeCSharpAction(data, elementCoords, screenSize, collectBrowserDetails());
+        var elementId = sourceId != null ? sourceId : "Unknown";
+
+        invokeCSharpAction(data, elementCoords, screenSize, collectBrowserDetails(), elementId);
     }
     catch (err) {
         console.log(err);
