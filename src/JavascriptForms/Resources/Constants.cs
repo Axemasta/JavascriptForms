@@ -8,7 +8,7 @@ namespace JavascriptForms
             /// <summary>
             /// app.js script
             /// </summary>
-            public const string App = "app.js";
+            public const string Spy = "spy.js";
 
             /// <summary>
             /// jquery script

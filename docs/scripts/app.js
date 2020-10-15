@@ -26,21 +26,21 @@ $(document).ready(function () {
             SpyOnUser(false);
         });
 
-        // function invokeCSharpAction(data, elementCoords, screenSize, browserDetails, elementId) {
+        function invokeCSharpAction(data, elementCoords, screenSize, browserDetails, elementId) {
 
-        //     var browserInvocation = {
-        //         BrowserUrl: window.location.href,
-        //         Data: data,
-        //         ElementCoordinates: elementCoords,
-        //         DisplayDimensions: screenSize,
-        //         BrowserInfo: browserDetails,
-        //         ElementName: elementId
-        //     };
+            var browserInvocation = {
+                BrowserUrl: window.location.href,
+                Data: data,
+                ElementCoordinates: elementCoords,
+                DisplayDimensions: screenSize,
+                BrowserInfo: browserDetails,
+                ElementName: elementId
+            };
         
-        //     var json = JSON.stringify(browserInvocation);
+            var json = JSON.stringify(browserInvocation);
         
-        //     console.log('this is the dummy invoke method: ' + json);
-        // }
+            console.log('this is the dummy invoke method: ' + json);
+        }
     }
 
     function SetListeningStatus(listening) {

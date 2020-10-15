@@ -64,7 +64,7 @@ namespace JavascriptForms.Droid.Renderers
                         LoadScript(_nativeInvoker),
                         LoadScript(Constants.Scripts.Invoker),
                         LoadScript(Constants.Scripts.JQuery),
-                        LoadScript(Constants.Scripts.App)
+                        LoadScript(Constants.Scripts.Spy)
                 ));
                 Control.AddJavascriptInterface(new JSBridge(this), "jsBridge");
 

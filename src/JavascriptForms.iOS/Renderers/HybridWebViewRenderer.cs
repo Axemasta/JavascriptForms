@@ -32,7 +32,7 @@ namespace JavascriptForms.iOS.Renderers
             var invokationScript = new WKUserScript(new NSString(LoadScript(Constants.Scripts.Invoker)), WKUserScriptInjectionTime.AtDocumentEnd, false);
             var nativeInvoker = new WKUserScript(new NSString(LoadScript(_nativeInvoker)), WKUserScriptInjectionTime.AtDocumentEnd, false);
             var jqueryScript = new WKUserScript(new NSString(LoadScript(Constants.Scripts.JQuery)), WKUserScriptInjectionTime.AtDocumentEnd, false);
-            var inputSpyScript = new WKUserScript(new NSString(LoadScript(Constants.Scripts.App)), WKUserScriptInjectionTime.AtDocumentEnd, false);
+            var inputSpyScript = new WKUserScript(new NSString(LoadScript(Constants.Scripts.Spy)), WKUserScriptInjectionTime.AtDocumentEnd, false);
 
             userController.AddUserScript(invokationScript);
             userController.AddUserScript(nativeInvoker);
