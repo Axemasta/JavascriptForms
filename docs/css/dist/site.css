@@ -35,3 +35,11 @@ button i {
 .status-stopped {
   color: darkred;
 }
+
+code {
+  background-color: rgba(27, 31, 35, 0.05);
+  margin: 0;
+  padding: 0.2em 0.4em;
+  color: black;
+  border-radius: 6px;
+}

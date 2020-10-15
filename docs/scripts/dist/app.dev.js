@@ -1,5 +1,6 @@
 "use strict";
 
+/* Scripts for the app functionaltiy. These are present in both website &amp; mobile app */
 $(document).ready(function () {
   var mobile = false;
   var secretWords = ['cat', 'dog', 'hello'];
@@ -75,22 +76,7 @@ $(document).ready(function () {
 
       $('#historyTextArea').text(joined);
     };
-  } // RenderMarkdown();
-  // function RenderMarkdown() {
-  //     console.log('rendering markdown');
-  //     try {
-  //         var text = $('#raw-setup-md').text();
-  //         var target = $('#rendered-setup-md');
-  //         var converter = new showdown.Converter();
-  //         var html = converter.makeHtml(text);
-  //         target.html(html);
-  //         // $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
-  //     }
-  //     catch (err) {
-  //         console.log(err);
-  //     }
-  // }
-
+  }
 });
 
 function collectBrowserDetails() {
@@ -192,17 +178,4 @@ function invokeCSCode(data, source) {
     console.log(err);
     alert('An error occurred invoking c# action: ' + err);
   }
-}
-
-function invokeCSharpAction(data, elementCoords, screenSize, browserDetails, elementId) {
-  var browserInvocation = {
-    BrowserUrl: window.location.href,
-    Data: data,
-    ElementCoordinates: elementCoords,
-    DisplayDimensions: screenSize,
-    BrowserInfo: browserDetails,
-    ElementName: elementId
-  };
-  var json = JSON.stringify(browserInvocation);
-  console.log(json);
 }
