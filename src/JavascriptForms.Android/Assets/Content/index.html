@@ -8,8 +8,8 @@
     <style>
         .jumbotron {
             border-radius: 0px;
-            background-color: #FBD786;
-            background-image: linear-gradient(to right, #FBD786, #f7797d);
+            background-color: #343a40;
+            background-image: linear-gradient(to right, #343a40, #868686);
             color: white;
         }
 
@@ -33,7 +33,7 @@
                 <h1 class="display-1">Javascript Forms</h1>
                 <small>Local</small>
                 <p>
-                    This Proof Of Concept (POC) provides an example implementation of javascript invokation in xamarin forms.
+                    This Proof Of Concept (POC) provides an example implementation of Javascript invokation in Xamarin Forms.
                 </p>
                 <p>
                     Developed from the official Xamarin.Forms samples repository (<a href="https://github.com/xamarin/xamarin-forms-samples/tree/master/CustomRenderers/HybridWebView" target="_blank">HybridWebView</a>), I have built upon the example allowing more complex invokation of javascript.
@@ -44,20 +44,15 @@
     </section>
 
     <section id="main-section" class="container">
-        <nav style="margin-bottom: 50px;;">
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-examples-tab" data-toggle="tab" href="#nav-examples" role="tab" aria-controls="nav-contact" aria-selected="false">Examples</a>
-                <a class="nav-item nav-link" id="nav-setup-tab" data-toggle="tab" href="#nav-setup" role="tab" aria-controls="nav-profile" aria-selected="false">Setup</a>
-                <a class="nav-item nav-link" id="nav-roadmap-tab" data-toggle="tab" href="#nav-roadmap" role="tab" aria-controls="nav-home" aria-selected="true">Roadmap</a>
-            </div>
-        </nav>
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-examples" role="tabpanel" aria-labelledby="nav-contact-tab">
                 <section id="examples-section">
                     <div class="container">
                         <div class="row">
-                            <h1>Examples</h1>
-                            <br /><br /><br /><br />
+                            <div class="col-md-12">
+                                <h1>Examples</h1>
+                                <p>Here are some examples for you to try out, right here in the mobile browser!</p>
+                            </div>
                         </div>
 
                         <div id="invoke-name-example" class="row">
@@ -122,22 +117,5 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-    <script>"use strict";
-
-        $(document).ready(function () {
-            $('#invoke-name-btn').on('click', function () {
-                console.log('submitting');
-                invokeCSCode($('#invoke-name-entry').val());
-            });
-        });
-
-        function invokeCSCode(data) {
-            try {
-                console.log("Sending Data:" + data);
-                invokeCSharpAction(data);
-            } catch (err) {
-                log(err);
-            }
-        }</script>
 </body>
 </html>

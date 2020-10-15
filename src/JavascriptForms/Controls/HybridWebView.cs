@@ -8,8 +8,6 @@ namespace JavascriptForms.Controls
 {
     public class HybridWebView : WebView
     {
-        Action<string> action;
-
         public static readonly BindableProperty UriProperty = BindableProperty.Create(nameof(Uri), typeof(string), typeof(HybridWebView), default(string));
 
         public static readonly BindableProperty SiteSourceProperty = BindableProperty.Create(nameof(SiteSource), typeof(SiteSource), typeof(HybridWebView), default(SiteSource));
@@ -32,17 +30,6 @@ namespace JavascriptForms.Controls
         {
             get => (ICommand)GetValue(CommandProperty);
             set => SetValue(CommandProperty, value);
-        }
-
-        public void InvokeAction(string data)
-        {
-            if (Command == null)
-                return;
-
-            if (!Command.CanExecute(data))
-                return;
-
-            Command.Execute(data);
         }
 
         public void InvokeAction(IBrowserInvocation data)

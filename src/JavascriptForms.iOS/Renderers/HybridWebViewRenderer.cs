@@ -10,13 +10,16 @@ using JavascriptForms.Controls;
 using System.Reflection;
 using JavascriptForms.Models;
 using Newtonsoft.Json;
+using JavascriptForms.Helpers;
+using System.Diagnostics;
 
 [assembly: ExportRenderer(typeof(HybridWebView), typeof(HybridWebViewRenderer))]
 namespace JavascriptForms.iOS.Renderers
 {
     public class HybridWebViewRenderer : WkWebViewRenderer, IWKScriptMessageHandler
     {
-        const string JavaScriptFunction = "function invokeCSharpAction(data){window.webkit.messageHandlers.invokeAction.postMessage(data);}";
+        const string _nativeInvoker = "JavascriptForms.iOS.Scripts.iOSInvoker.js";
+
         WKUserContentController userController;
 
         public HybridWebViewRenderer() : this(new WKWebViewConfiguration())
@@ -26,11 +29,13 @@ namespace JavascriptForms.iOS.Renderers
         public HybridWebViewRenderer(WKWebViewConfiguration config) : base(config)
         {
             userController = config.UserContentController;
-            var invokationScript = new WKUserScript(new NSString(LoadScript("JavascriptForms.iOS.Scripts.InvokeCSharp.js")), WKUserScriptInjectionTime.AtDocumentEnd, false);
-            var jqueryScript = new WKUserScript(new NSString(LoadScript("JavascriptForms.iOS.Scripts.jquery-3.5.1.min.js")), WKUserScriptInjectionTime.AtDocumentEnd, false);
-            var inputSpyScript = new WKUserScript(new NSString(LoadScript("JavascriptForms.iOS.Scripts.app.js")), WKUserScriptInjectionTime.AtDocumentEnd, false);
+            var invokationScript = new WKUserScript(new NSString(LoadScript(Constants.Scripts.Invoker)), WKUserScriptInjectionTime.AtDocumentEnd, false);
+            var nativeInvoker = new WKUserScript(new NSString(LoadScript(_nativeInvoker)), WKUserScriptInjectionTime.AtDocumentEnd, false);
+            var jqueryScript = new WKUserScript(new NSString(LoadScript(Constants.Scripts.JQuery)), WKUserScriptInjectionTime.AtDocumentEnd, false);
+            var inputSpyScript = new WKUserScript(new NSString(LoadScript(Constants.Scripts.App)), WKUserScriptInjectionTime.AtDocumentEnd, false);
 
             userController.AddUserScript(invokationScript);
+            userController.AddUserScript(nativeInvoker);
             userController.AddUserScript(jqueryScript);
             userController.AddUserScript(inputSpyScript);
             userController.AddScriptMessageHandler(this, "invokeAction");
@@ -46,14 +51,24 @@ namespace JavascriptForms.iOS.Renderers
 
         private string LoadScript(string resourceName)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            bool isNativeResource = resourceName == _nativeInvoker;
 
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-            using (StreamReader reader = new StreamReader(stream))
+            var assembly = isNativeResource ? Assembly.GetExecutingAssembly() : typeof(JavascriptForms.App).Assembly;
+
+            if (!isNativeResource)
             {
-                string result = reader.ReadToEnd();
+                resourceName = string.Format("JavascriptForms.Scripts.{0}", resourceName);
+            }
 
-                return result;
+            try
+            {
+                return ScriptHelper.LoadJavascript(assembly, resourceName);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"An exception occured loading script: {resourceName}");
+                Debug.WriteLine(ex);
+                return default;
             }
         }
 
@@ -101,9 +116,17 @@ namespace JavascriptForms.iOS.Renderers
         {
             //Console.WriteLine(message.Body);
 
-            IBrowserInvocation args = JsonConvert.DeserializeObject<BrowserInvocation>(message.Body.ToString());
+            try
+            {
+                IBrowserInvocation args = JsonConvert.DeserializeObject<BrowserInvocation>(message.Body.ToString());
 
-            ((HybridWebView)Element).InvokeAction(args);
+                ((HybridWebView)Element).InvokeAction(args);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Unable to parse browser invocation: {message.Body}");
+                Debug.WriteLine(ex);
+            }
         }
 
         protected override void Dispose(bool disposing)

@@ -1,21 +1,29 @@
-﻿using Android.Webkit;
+﻿using System.Linq;
+using Android.Webkit;
 using Xamarin.Forms.Platform.Android;
 
 namespace JavascriptForms.Droid.Renderers
 {
     public class JavascriptWebViewClient : FormsWebViewClient
     {
-        string _javascript;
+        string[] _scripts;
 
-        public JavascriptWebViewClient(HybridWebViewRenderer renderer, string javascript) : base(renderer)
+        public JavascriptWebViewClient(HybridWebViewRenderer renderer, params string[] scripts) : base(renderer)
         {
-            _javascript = javascript;
+            _scripts = scripts;
         }
 
         public override void OnPageFinished(WebView view, string url)
         {
             base.OnPageFinished(view, url);
-            view.EvaluateJavascript(_javascript, null);
+
+            if (_scripts != null && _scripts.Count() > 0)
+            {
+                foreach (string script in _scripts)
+                {
+                    view.EvaluateJavascript(script, null);
+                }
+            }
         }
     }
 }
