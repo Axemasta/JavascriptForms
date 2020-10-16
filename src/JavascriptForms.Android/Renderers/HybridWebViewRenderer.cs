@@ -10,14 +10,6 @@ using Xamarin.Forms.Platform.Android;
 [assembly: ExportRenderer(typeof(HybridWebView), typeof(HybridWebViewRenderer))]
 namespace JavascriptForms.Droid.Renderers
 {
-    public class test : WebViewRenderer
-    {
-        public test(Context context) : base(context)
-        {
-
-        }
-    }
-
     public class HybridWebViewRenderer : WebViewRenderer
     {
         const string _nativeInvoker = "JavascriptForms.Droid.Scripts.AndroidInvoker.js";
