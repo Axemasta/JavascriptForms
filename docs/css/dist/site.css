@@ -43,3 +43,7 @@ code {
   color: black;
   border-radius: 6px;
 }
+
+.center-cell {
+  text-align: center;
+}

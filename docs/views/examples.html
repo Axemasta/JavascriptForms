@@ -1,33 +1,73 @@
 <section id="examples-section">
     <div class="container">
         <div class="row">
-            <h1>Examples</h1>
+            <div class="col-md-12">
+                <h1>Examples</h1>
+                <p>Here are some examples of javascript invokation in a Xamarin Forms webview. If you are viewing from the sample app, the events will be executing from the viewmodels (C# code). If you are viewing from another browser, the <code>invokeCSAction</code> method will just log to the console, open the developer console to view the output.</p>
+            </div>
         </div>
         <hr/>
         <div id="invoke-name-example" class="row padding-top-bot">
-            <h1>Invoke Name Alert</h1>
-            <p>In this example we will enter some text into the textbox and display an alert in our xamarin app with the data. In this case the app is hardcoded to expect a name, so enter your name! 😄</p>
-            <div id="invoke-name-form">
-                <div class="form-row align-items-center">
-                    <div class="col-auto">
-                        <label class="sr-only" for="invoke-name-entry">Your Name</label>
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">🙋‍♂️</div>
+            <div class="col-md-12">
+                <h1>Invoke Name Alert</h1>
+                <p>In this example we will enter some text into the textbox and display an alert in our xamarin app with the data. In this case the app is hardcoded to expect a name, so enter your name! 😄</p>
+                <div id="invoke-name-form">
+                    <div class="form-row align-items-center">
+                        <div class="col-auto">
+                            <label class="sr-only" for="invoke-name-entry">Your Name</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">🙋‍♂️</div>
+                                </div>
+                                <input type="text" class="form-control" id="invoke-name-entry" placeholder="Your Name">
                             </div>
-                            <input type="text" class="form-control" id="invoke-name-entry" placeholder="Your Name">
                         </div>
-                    </div>
-                    <div class="col-auto">
-                        <button type="submit" id="invoke-name-btn" class="btn btn-primary mb-2">Submit</button>
+                        <div class="col-auto">
+                            <button type="submit" id="invoke-name-btn" class="btn btn-primary mb-2"><i class="fas fa-paper-plane"></i>Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="intercept-keypress-example">
-            <h1>Intercept Keypresses</h1>
+        <hr/>
+        <div id="intercept-keypress-example" class="row padding-top-bot">
+            <div class="col-md-12">
+                <h1>Intercept Keypresses</h1>
+                <p>In this example we will intercept the key press events within the browser. If the user types any of the forbidden keywords an alert will be invoked.</p>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                  <label for="exampleFormControlTextarea1">Example textarea</label>
+                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" style="margin-bottom: 15px;"></textarea>
+                  <button type="submit" id="intercept-keys-start-btn" class="btn btn-success"><i class="fas fa-headphones"></i>Listen</button>
+                  <button type="submit" id="intercept-keys-stop-btn" class="btn btn-danger"><i class="fas fa-hand-paper"></i>Stop</button>
+                </div>
+                <div id="accordionExample">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                                    aria-expanded="true" aria-controls="collapseOne">
+                                    Typing History <i class="fas fa-history"></i>
+                                </button>
+                            </h5>
+                        </div>
+                
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="historyTextArea">Here is your typing history, collected whilst the keyboard listener is active! 😀</label>
+                                    <p><small class="text-muted">Listening Status: </small><span class="listening-status status-stopped"><span>Stopped</span><i class="fas fa-stop"></i></span></p>
+                                    <textarea class="form-control" id="historyTextArea" rows="3" style="margin-bottom: 15px;" disabled></textarea>
+                                    <button type="submit" id="intercept-keys-clear-btn" class="btn btn-dark"><i class="fas fa-ban"></i>Clear History</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-<script src="https://morgan3d.github.io/include.js/include.min.js"></script> 
+<script src="https://morgan3d.github.io/include.js/include.min.js"></script>
