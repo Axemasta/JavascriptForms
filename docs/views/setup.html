@@ -1,97 +1,258 @@
 <section id="setup-section">
-    </div class="row">              
+    </div class="row">
         <div class="col-md-12">
-            <p>TODO: Render markdown here so I can be lazy and write my docs in md 🥵</p>
-            <textarea id="raw-setup-md" rows="85" style="width: 100%;">
-# Setup
-
-This section explains how you can setup your Xamarin Forms application to be able to inject, intercept & invoke events within your app.
-
-We will be using `WebView` as our primary browser, this will renderer down to native implemenations:
-
-- `WkWebView` on iOS
-- `GoogleChrome` on Android
-
-![The official xamarin](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/custom-renderer/hybridwebview-images/webview-classes.png)
-
-A custom renderer will be used so to make things less likely to interfere with other components, we will subclass `WebView` and create `HybridWebView`:
-
-```
+            <h1>Setup</h1>
+            <p>This section explains how you can setup your Xamarin Forms application to be able to inject, intercept &amp; invoke events within your app.</p>
+            <p>We will be using <code>WebView</code> as our primary browser, this will renderer down to native implemenations:</p>
+            <ul>
+            <li><code>WkWebView</code> on iOS</li>
+            <li><code>GoogleChrome</code> on Android</li>
+            </ul>
+            <p><img src="https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/custom-renderer/hybridwebview-images/webview-classes.png" alt="The official xamarin"></p>
+            <h2>Shared</h2>
+            <p>A custom renderer will be used so to make things less likely to interfere with other components, we will subclass <code>WebView</code> and create <code>HybridWebView</code>. In this example repository I have modified the <code>HybridWebView</code> to accept either a local html file or a url, you will only need to do this if you are displaying both in your app. To see this alternative implementation see <a href="https://github.com/Axemasta/JavascriptForms/blob/main/src/JavascriptForms/Controls/HybridWebView.cs">here</a>.</p>
+            <pre class="hljs"><code>
 public class HybridWebView : WebView
 {
-Action<string> action;
+    public static readonly BindableProperty UriProperty = BindableProperty.Create(nameof(Uri), typeof(string), typeof(HybridWebView), default(string));
 
-public static readonly BindableProperty UriProperty = BindableProperty.Create(
-propertyName: nameof(Uri),
-returnType: typeof(string),
-declaringType: typeof(HybridWebView),
-defaultValue: default(string));
+    public static readonly BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(HybridWebView));
 
-public string Uri
+    public string Uri
+    {
+        get =&gt; (string)GetValue(UriProperty);
+        set =&gt; SetValue(UriProperty, value);
+    }
+    public ICommand Command
+    {
+        get =&gt; (ICommand)GetValue(CommandProperty);
+        set =&gt; SetValue(CommandProperty, value);
+    }
+
+    public void InvokeAction(IBrowserInvocation data)
+    {
+        if (Command == null)
+            return;
+
+        if (!Command.CanExecute(data))
+            return;
+
+        Command.Execute(data);
+    }
+}
+            </code></pre>
+            <p>You can reference this webview in xaml:</p>
+            <pre class="hljs"><code>
+&lt;ContentPage ...
+        xmlns:controls=&quot;clr-namespace:YourNameSpace;assembly=CustomRenderer&quot;
+        x:Class=&quot;YourNameSpace.HybridWebViewPage&quot;
+        Padding=&quot;0,40,0,0&quot;&gt;
+    &lt;controls:HybridWebView Command=&quot;{Binding InvokeNameCommand}&quot; Uri=&quot;https://axemasta.github.io/JavascriptForms/&quot;/&gt;
+&lt;/ContentPage&gt;
+            </code></pre>
+            <p>In my source code example I am using the following interface <code>IBrowserInvocation</code>:</p>
+            <pre class="hljs"><code>
+public interface IBrowserInvocation
 {
-get { return (string)GetValue(UriProperty); }
-set { SetValue(UriProperty, value); }
+    string BrowserUrl { get; }
+
+    string Data { get; }
+
+    Coordinates ElementCoordinates { get; }
+
+    Coordinates DisplayDimensions { get; }
+
+    BrowserInfo BrowserInfo { get; }
+
+    string ElementName { get; }
+}
+            </code></pre>
+            <p>You do not have to use this object, I simply wanted to pass some extra information to my App when a javascript event is invoked. By default a <code>string</code> is passed to the app from the javascript, so if you use a more complex object type (like my example) you should serialise it as JSON first (<code>var json = JSON.stringify('{ &quot;foo&quot; : &quot;bar&quot; }');</code>).</p>
+            <p>Next we will setup our custom renderers on each platform.</p>
+            <h2>iOS</h2>
+            <p>For the entire class see the source code example <a href="https://github.com/Axemasta/JavascriptForms/blob/main/src/JavascriptForms.iOS/Renderers/HybridWebViewRenderer.cs">here</a>.</p>
+            <p>Your renderer will need to inherit <code>WkWebViewRenderer</code> and implement <code>IWKScriptMessageHandler</code>. <code>IWKScriptMessageHandler</code> will add the following method to your class:</p>
+            <pre class="hljs"><code>
+public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
+{
+}
+            </code></pre>
+            <p>This is the method that will be called if our javascript invocation has been successful. The data passed from the javascript can be found in the <code>message.Body</code> property.</p>
+            <p>You will need to add a new paramaterless constructor to your renderer that initializes a <code>WKWebViewConfiguration</code> object, we will use this setup inject the javascript.</p>
+            <pre class="hljs"><code>
+WKUserContentController _userController;
+
+public HybridWebViewRenderer() : this(new WKWebViewConfiguration())
+{
 }
 
-public void RegisterAction(Action<string> callback)
+public HybridWebViewRenderer(WKWebViewConfiguration config) : base(config)
 {
-action = callback;
-}
+    string js = &quot;alert('I have been loaded!')&quot;;
+    string nativeCaller = &quot;function invokeNative(payload) { window.webkit.messageHandlers.invokeAction.postMessage(payload); }&quot;;
 
-public void Cleanup()
+    _userController = config.UserContentController;
+    var myScript = new WKUserScript(new NSString(js), WKUserScriptInjectionTime.AtDocumentEnd, false);
+        var nativeInvoker = new WKUserScript(new NSString(nativeCaller), WKUserScriptInjectionTime.AtDocumentEnd, false);
+
+    _userController.AddUserScript(myScript);
+    _userController.AddUserScript(nativeInvoker);
+    _userController.AddScriptMessageHandler(this, &quot;invokeAction&quot;);
+}
+            </code></pre>
+            <p>We create a new <code>WKUserScript</code> containing our javascript and add it to the web view. We then add a script message handler, this handler is a web kit handler and will be invoked by our native caller script. The message handler name is a string and any number of handlers can be added to the webview.</p>
+            <p>Finally we override the <code>OnElementChanged</code> method of the renderer and handle setup / teardown of the <code>WebView</code>.</p>
+            <pre class="hljs"><code>
+protected override void OnElementChanged(VisualElementChangedEventArgs e)
 {
-action = null;
-}
+    base.OnElementChanged(e);
 
-public void InvokeAction(string data)
+    if (e.OldElement != null)
+    {
+        userController.RemoveAllUserScripts();
+        userController.RemoveScriptMessageHandler(&quot;invokeAction&quot;);
+        HybridWebView hybridWebView = e.OldElement as HybridWebView;
+    }
+
+    if (e.NewElement != null)
+    {
+        HybridWebView hybridWebView = Element as HybridWebView;
+
+        if (hybridWebView == null)
+            throw new InvalidCastException(&quot;Could not cast Element as HybridWebView&quot;);
+
+        LoadRequest(new NSUrlRequest(new NSUrl(hybridWebView.Uri)));
+    }
+}
+            </code></pre>
+            <p>Finally don’t forget to export your renderer 😇</p>
+            <pre class="hljs"><code>
+[assembly: ExportRenderer(typeof(HybridWebView), typeof(HybridWebViewRenderer))]
+            </code></pre>
+            <h2>Android</h2>
+            <p>For the entire class and external classes see the source code example <a href="https://github.com/Axemasta/JavascriptForms/tree/main/src/JavascriptForms.Android/Renderers">here</a>.</p>
+            <p>Your renderer will need to inherit <code>Xamarin.Forms.Platform.Android.WebViewRenderer</code>. Add a new constructor to your renderer and pass in the <code>Context</code> class, otherwise the compiler will shout at you (one of my fave quirks on android). This time we will be doing the majority of the config in the <code>OnElementChanged</code> method.</p>
+            <pre class="hljs"><code>
+const string nativeInvokeScript = &quot;function invokeNative(payload) { jsBridge.invokeAction(payload); }&quot;;
+const string testScript = &quot;alert('I have been loaded!')&quot;;
+
+protected override void OnElementChanged(ElementChangedEventArgs&lt;WebView&gt; e)
 {
-if (action == null || data == null)
+    base.OnElementChanged(e);
+
+    if (e.OldElement != null)
+    {
+        Control.RemoveJavascriptInterface(&quot;jsBridge&quot;);
+    }
+
+    if (e.NewElement != null)
+    {
+        HybridWebView hybridWebView = Element as HybridWebView;
+
+        if (hybridWebView == null)
+            throw new NullReferenceException();
+
+        Control.SetWebViewClient(
+            new JavascriptWebViewClient(this,
+                LoadScript(nativeInvokeScript),
+                LoadScript(testScript)
+        ));
+        Control.AddJavascriptInterface(new JSBridge(this), &quot;jsBridge&quot;);
+
+        Control.LoadUrl(hybridWebView.Uri);
+    }
+}
+            </code></pre>
+            <p>We now need to create a webview client and a javascript bridge.</p>
+            <h4>Web View Client</h4>
+            <p>Create a class that inherits <code>FormsWebViewClient</code>:</p>
+            <pre class="hljs"><code>
+public class JavascriptWebViewClient : FormsWebViewClient
 {
-return;
+    string[] _scripts;
+
+    public JavascriptWebViewClient(HybridWebViewRenderer renderer, params string[] scripts) : base(renderer)
+    {
+        _scripts = scripts;
+    }
+
+    public override void OnPageFinished(WebView view, string url)
+    {
+        base.OnPageFinished(view, url);
+
+        if (_scripts != null &amp;&amp; _scripts.Count() &gt; 0)
+        {
+            foreach (string script in _scripts)
+            {
+                view.EvaluateJavascript(script, null);
+            }
+        }
+    }
 }
-action.Invoke(data);
-}
-}
-```
-
-You can reference this webview in xaml:
-
-```xml
-<ContentPage ...
-xmlns:controls="clr-namespace:YourNameSpace;assembly=CustomRenderer"
-x:Class="YourNameSpace.HybridWebViewPage"
-Padding="0,40,0,0">
-<controls:HybridWebView x:Name="hybridWebView"
-    Uri="https://axemasta.github.io/JavascriptForms/" />
-</ContentPage>
-```
-
-or from codebehind:
-
-```csharp
-public HybridWebViewPage()
+            </code></pre>
+            <p>I have jazzed up this class a little from the official Xamarin <a href="https://github.com/xamarin/xamarin-forms-samples/blob/master/CustomRenderers/HybridWebView/Droid/JavascriptWebViewClient.cs">sample</a>. In this example only 1 script is passed to the webview and it is prefixed with: <code>&quot;javascript: {0}&quot;</code>. In my example we use a few scripts so it makes sense to make the scripts and array.</p>
+            <h4>Javascript Bridge</h4>
+            <p>We will now need a callback for our injected scripts, add the following class:</p>
+            <pre class="hljs"><code>
+public class JSBridge : Java.Lang.Object
 {
-var hybridWebView = new HybridWebView
-{
-Uri = "https://axemasta.github.io/JavascriptForms/"
-};
+    readonly WeakReference&lt;HybridWebViewRenderer&gt; hybridWebViewRenderer;
 
-Content = hybridWebView;
+    public JSBridge(HybridWebViewRenderer hybridRenderer)
+    {
+        hybridWebViewRenderer = new WeakReference&lt;HybridWebViewRenderer&gt;(hybridRenderer);
+    }
+
+    [JavascriptInterface]
+    [Export(&quot;invokeAction&quot;)]
+    public void InvokeAction(string data)
+    {
+        HybridWebViewRenderer hybridRenderer;
+
+        if (hybridWebViewRenderer != null &amp;&amp; hybridWebViewRenderer.TryGetTarget(out hybridRenderer))
+        {
+            try
+            {
+                IBrowserInvocation args = JsonConvert.DeserializeObject&lt;BrowserInvocation&gt;(data);
+
+                ((HybridWebView)hybridRenderer.Element).InvokeAction(args);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($&quot;Unable to parse browser invocation: {data}&quot;);
+                Debug.WriteLine(ex);
+            }
+        }
+    }
 }
-```
-
-You can subscribe to the `RegisterAction` method in codebehind to handle the events invoked by the control:
-
-```csharp
-HybridWebView.RegisterAction(args => Console.WriteLine("WebView action invoked with args: " + args));
-```
-            </textarea>
-
-            <div id="rendered-setup-md">
-
-            </div>
+            </code></pre>
+            <p>This class maintains a weak reference to the webview renderer in order to avoid a circular dependency. Similar to iOS this class exports the action <code>&quot;invokeAction&quot;</code> which acts as the link between the browser and app. When the action is called you can handle the payload invoked from the browser and then call the <code>InvokeAction</code> method on the <code>HybridWebView</code> which will update the view models.</p>
+            <p>In order to use the <code>[Export]</code> attribute, you must add a project reference in the android project to: <code>Mono.Android.Export</code>.</p>
+            <h2>The Premise</h2>
+            <p>Our webview’s each inject shared and native code. Each renderer specifies a slightly different “hook” to invoke the c# code. In my examples I have made the common invokation method generic and then injected the native handler on each platform, leaving us with the following call stack:</p>
+            <pre class="hljs"><code>
+=&gt; Javascript Event
+    =&gt; Javascript Event Listener         {external code}
+-------------------------------------------------------
+        =&gt; InvokeCSharpAction();           {our code}
+            =&gt; InvokeNative();
+                =&gt; Method invoked in renderer
+            </code></pre>
+            <p>We then invoke an <code>ICommand</code> with the given payload (<code>string</code>, <code>IBrowserInvocation</code> etc), which can be bound too and handled further from any viewmodel. This has given us a really easy MVVM friendly native level implementation 😁</p>
+            <h2>Expanding Upon Design</h2>
+            <p>We now have a custom renderer for each platform that can inject and invoke javascript into the natively rendered <code>WebView</code>. In my source code example I added a more detailed invocation object, this is a great place to start. Further improvements could be:</p>
+            <ul>
+            <li>Intercepting <code>console.log()</code> events and logging them in the xamarin app</li>
+            <li>Adding more error handling</li>
+            <li>Making things more typesafe (Typescript).</li>
+            </ul>
         </div>
     </div>
 </section>
 
-<script src="https://morgan3d.github.io/include.js/include.min.js"></script> 
+<script src="https://morgan3d.github.io/include.js/include.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js"></script>
+<script>
+    $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
+</script>

@@ -43,3 +43,37 @@ code {
   color: black;
   border-radius: 6px;
 }
+
+.center-cell {
+  text-align: center;
+}
+
+.navbar-nav-svg {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: text-top;
+  color: white;
+  opacity: 0.75;
+}
+.navbar-nav-svg:hover {
+  color: white;
+  opacity: 1;
+}
+
+#linkedin-icon {
+  border-radius: 7px;
+}
+
+#github-icon {
+  border-radius: 50%;
+}
+
+.footer {
+  text-align: right;
+  margin-bottom: 1em;
+}
+.footer p {
+  padding: unset !important;
+  margin: unset !important;
+}

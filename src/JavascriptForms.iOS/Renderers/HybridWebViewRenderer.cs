@@ -16,6 +16,14 @@ using System.Diagnostics;
 [assembly: ExportRenderer(typeof(HybridWebView), typeof(HybridWebViewRenderer))]
 namespace JavascriptForms.iOS.Renderers
 {
+    public class TestRendo : WkWebViewRenderer, IWKScriptMessageHandler
+    {
+        public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class HybridWebViewRenderer : WkWebViewRenderer, IWKScriptMessageHandler
     {
         const string _nativeInvoker = "JavascriptForms.iOS.Scripts.iOSInvoker.js";
