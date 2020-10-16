@@ -5,7 +5,7 @@ $(document).ready(function () {
 });
 
 function HighlightCode() {
-    // console.log('highlighting...');
+    //console.log('highlighting...');
     $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
-    // console.log('everything should be highlighted! :)');
+    //console.log('everything should be highlighted! :)');
 }
