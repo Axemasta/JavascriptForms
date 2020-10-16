@@ -42,12 +42,13 @@ public class HybridWebView : WebView
 }
             </code></pre>
             <p>You can reference this webview in xaml:</p>
-            <pre class="hljs"><code>&lt;ContentPage ...
-            xmlns:controls=&quot;clr-namespace:YourNameSpace;assembly=CustomRenderer&quot;
-            x:Class=&quot;YourNameSpace.HybridWebViewPage&quot;
-            Padding=&quot;0,40,0,0&quot;&gt;
-            &lt;controls:HybridWebView Command=&quot;{Binding InvokeNameCommand}&quot; Uri=&quot;https://axemasta.github.io/JavascriptForms/&quot;/&gt;
-            &lt;/ContentPage&gt;
+            <pre class="hljs"><code>
+&lt;ContentPage ...
+        xmlns:controls=&quot;clr-namespace:YourNameSpace;assembly=CustomRenderer&quot;
+        x:Class=&quot;YourNameSpace.HybridWebViewPage&quot;
+        Padding=&quot;0,40,0,0&quot;&gt;
+    &lt;controls:HybridWebView Command=&quot;{Binding InvokeNameCommand}&quot; Uri=&quot;https://axemasta.github.io/JavascriptForms/&quot;/&gt;
+&lt;/ContentPage&gt;
             </code></pre>
             <p>In my source code example I am using the following interface <code>IBrowserInvocation</code>:</p>
             <pre class="hljs"><code>
@@ -71,9 +72,10 @@ public interface IBrowserInvocation
             <h2>iOS</h2>
             <p>For the entire class see the source code example <a href="https://github.com/Axemasta/JavascriptForms/blob/main/src/JavascriptForms.iOS/Renderers/HybridWebViewRenderer.cs">here</a>.</p>
             <p>Your renderer will need to inherit <code>WkWebViewRenderer</code> and implement <code>IWKScriptMessageHandler</code>. <code>IWKScriptMessageHandler</code> will add the following method to your class:</p>
-            <pre class="hljs"><code>public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
-            {
-            }
+            <pre class="hljs"><code>
+public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
+{
+}
             </code></pre>
             <p>This is the method that will be called if our javascript invocation has been successful. The data passed from the javascript can be found in the <code>message.Body</code> property.</p>
             <p>You will need to add a new paramaterless constructor to your renderer that initializes a <code>WKWebViewConfiguration</code> object, we will use this setup inject the javascript.</p>
@@ -124,7 +126,8 @@ protected override void OnElementChanged(VisualElementChangedEventArgs e)
 }
             </code></pre>
             <p>Finally don’t forget to export your renderer 😇</p>
-            <pre class="hljs"><code>[assembly: ExportRenderer(typeof(HybridWebView), typeof(HybridWebViewRenderer))]
+            <pre class="hljs"><code>
+[assembly: ExportRenderer(typeof(HybridWebView), typeof(HybridWebViewRenderer))]
             </code></pre>
             <h2>Android</h2>
             <p>For the entire class and external classes see the source code example <a href="https://github.com/Axemasta/JavascriptForms/tree/main/src/JavascriptForms.Android/Renderers">here</a>.</p>

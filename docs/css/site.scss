@@ -52,3 +52,40 @@ code {
 .center-cell {
     text-align: center;
 }
+
+.navbar-nav-svg {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    vertical-align: text-top;
+
+    color:white;
+    opacity: 0.75;
+
+    &:hover {
+        color:white;
+        opacity: 1;
+        //Doesn't render correctly, there is a wierd box still covering the icon. Need to figure out what is going on 😔
+        // box-shadow: 0 0 5px 5px rgba(255, 255, 255, 0.5); 
+    }
+
+    
+}
+
+#linkedin-icon {
+    border-radius: 7px;
+}
+
+#github-icon {
+    border-radius: 50%;
+}
+
+.footer {
+    text-align: right;
+    margin-bottom: 1em;
+    
+    p {
+        padding: unset !important;
+        margin: unset !important;
+    }
+}

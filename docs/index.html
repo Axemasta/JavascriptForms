@@ -17,7 +17,7 @@
                     <ul class="navbar-nav bd-navbar-nav flex-row float-right">
                         <li class="nav-item">
                             <a href="https://www.linkedin.com/in/alexander-duffell-a05a30130/" target="_blank">
-                                <svg class="navbar-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                <svg id="linkedin-icon" class="navbar-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                     focusable="false">
                                     <title>LinkedIn</title>
                                     <path
@@ -28,7 +28,7 @@
                         </li>
                         <li class="nav-item" style="padding-left:20px;">
                             <a href="https://github.com/Axemasta" target="_blank" class="navbar-nav-svg">
-                                <svg class="navbar-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 499.36"
+                                <svg id="github-icon" class="navbar-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 499.36"
                                     focusable="false">
                                     <title>GitHub</title>
                                     <path
@@ -52,23 +52,23 @@
         </section>
         
         <section id="main-section" class="container">
-            <nav style="margin-bottom: 50px;;">
+            <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link" id="nav-examples-tab" data-toggle="tab" href="#nav-examples" role="tab" aria-controls="nav-contact" aria-selected="false">Examples</a>
-                    <a class="nav-item nav-link active" id="nav-setup-tab" data-toggle="tab" href="#nav-setup" role="tab" aria-controls="nav-profile" aria-selected="false">Setup</a>
-                    <a class="nav-item nav-link" id="nav-roadmap-tab" data-toggle="tab" href="#nav-roadmap" role="tab" aria-controls="nav-home" aria-selected="true">Roadmap</a>
+                    <a class="nav-item nav-link active" id="nav-examples-tab" data-toggle="tab" href="#nav-examples" role="tab" aria-controls="nav-examples" aria-selected="true">Examples</a>
+                    <a class="nav-item nav-link" id="nav-setup-tab" data-toggle="tab" href="#nav-setup" role="tab" aria-controls="nav-setup" aria-selected="false">Setup</a>
+                    <a class="nav-item nav-link" id="nav-roadmap-tab" data-toggle="tab" href="#nav-roadmap" role="tab" aria-controls="nav-roadmap" aria-selected="false">Roadmap</a>
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade" id="nav-examples" role="tabpanel" aria-labelledby="nav-contact-tab">
+                <div class="tab-pane fade show active" id="nav-examples" role="tabpanel" aria-labelledby="nav-examples-tab">
                     <include src="views/examples.html"></include>
                 </div>
 
-                <div class="tab-pane fade show active" id="nav-setup" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="tab-pane fade" id="nav-setup" role="tabpanel" aria-labelledby="nav-setup-tab">
                     <include src="views/setup.html"></include>
                 </div>
 
-                <div class="tab-pane fade" id="nav-roadmap" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="tab-pane fade" id="nav-roadmap" role="tabpanel" aria-labelledby="nav-roadmap-tab">
                     <include src="views/roadmap.html"></include>
                 </div>
               </div>
@@ -76,11 +76,18 @@
         </section>
         
         <section id="footer-section">
-            <footer class="text-muted">
-            <div class="container">
-                <hr/>
-                <p>Javascript Forms Sample</p>
-            </div>
+            <footer>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 footer">
+                            <hr/>
+                            <div class="float-right text-muted">
+                                <p>Javascript Forms Sample Site</p>
+                                <a href="https://github.com/Axemasta" target="_blank"><p>Made by Axemasta <i class="fab fa-github"></i></p></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </footer>
         </section>
 
